@@ -1,8 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { ensureModelContext, fail, unregisterFrom, type ToolDefinition } from './modelContext';
+import { ensureModelContext, fail, type ToolDefinition } from './modelContext';
 
 /**
  * Registers tools on mount and unregisters on unmount.
+ *
+ * Teardown goes through an AbortController: `registerTool` resolves to nothing,
+ * and aborting the signal it was given is what removes the tool.
  *
  * `defs` is read through a ref so tool bodies always see current board state
  * without re-registering on every render.
@@ -12,15 +15,17 @@ export function useTools(defs: ToolDefinition[], onRegistered?: (names: string[]
   latest.current = defs;
 
   useEffect(() => {
-    let cancelled = false;
-    const handles: unknown[] = [];
+    const controller = new AbortController();
 
     (async () => {
       const mc = await ensureModelContext();
-      if (!mc || cancelled) {
-        if (!mc) console.warn('[sift] No model context available. Serve over HTTPS — it is [SecureContext].');
+      if (!mc) {
+        console.warn('[sift] No model context available. Serve over HTTPS — it is [SecureContext].');
         return;
       }
+      if (controller.signal.aborted) return;
+
+      const registered: string[] = [];
       for (const def of latest.current) {
         const stable: ToolDefinition = {
           name: def.name,
@@ -37,24 +42,17 @@ export function useTools(defs: ToolDefinition[], onRegistered?: (names: string[]
           },
         };
         try {
-          handles.push(mc.registerTool(stable));
+          await mc.registerTool(stable, { signal: controller.signal });
+          registered.push(def.name);
         } catch (err) {
+          if (controller.signal.aborted) return;
           console.error(`[sift] failed to register ${def.name}`, err);
         }
       }
-      onRegistered?.(latest.current.map((d) => d.name));
+      if (!controller.signal.aborted) onRegistered?.(registered);
     })();
 
-    return () => {
-      cancelled = true;
-      for (const h of handles) {
-        try {
-          unregisterFrom(h);
-        } catch {
-          /* nothing useful to do on teardown */
-        }
-      }
-    };
+    return () => controller.abort();
     // Registered once for the life of the component; bodies read state via the ref.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

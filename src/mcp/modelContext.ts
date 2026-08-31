@@ -2,8 +2,11 @@
  * WebMCP binding.
  *
  * The current docs use `document.modelContext`; the older W3C proposal text uses
- * `navigator.modelContext`. Bind to whichever exists so we work either way.
- * Both are [SecureContext] — over plain HTTP this is undefined and we no-op.
+ * `navigator.modelContext`. Bind to whichever exists so we work either way — the
+ * polyfill installs `document.modelContext` and keeps `navigator.modelContext` as a
+ * deprecated alias, so document is checked first.
+ *
+ * Both are [SecureContext]: over plain HTTP this is undefined and we no-op.
  */
 
 export interface ToolResult {
@@ -19,8 +22,13 @@ export interface ToolDefinition {
   execute: (args: any) => Promise<ToolResult> | ToolResult;
 }
 
-interface ModelContextLike {
-  registerTool(tool: ToolDefinition): unknown;
+export interface RegisterOptions {
+  /** Aborting unregisters the tool. This is the only teardown path the polyfill offers. */
+  signal?: AbortSignal;
+}
+
+export interface ModelContextLike {
+  registerTool(tool: ToolDefinition, options?: RegisterOptions): unknown;
 }
 
 export function getModelContext(): ModelContextLike | null {
@@ -29,26 +37,20 @@ export function getModelContext(): ModelContextLike | null {
   return null;
 }
 
-/** Loads the polyfill only when the browser has no native model context. */
+/**
+ * Loads and initializes the polyfill only when the browser has no native model context.
+ * The ESM build does not self-install — it has to be told to.
+ */
 export async function ensureModelContext(): Promise<ModelContextLike | null> {
   const native = getModelContext();
   if (native) return native;
   try {
-    await import('@mcp-b/webmcp-polyfill');
+    const { initializeWebMCPPolyfill } = await import('@mcp-b/webmcp-polyfill');
+    initializeWebMCPPolyfill();
   } catch (err) {
-    console.warn('[sift] WebMCP polyfill failed to load', err);
+    console.warn('[sift] WebMCP polyfill unavailable', err);
   }
   return getModelContext();
-}
-
-/** registerTool has returned an unregister function, a disposable, or nothing across versions. */
-export function unregisterFrom(handle: unknown): void {
-  if (typeof handle === 'function') {
-    (handle as () => void)();
-    return;
-  }
-  const h = handle as { unregister?: () => void; dispose?: () => void; remove?: () => void } | null;
-  h?.unregister?.() ?? h?.dispose?.() ?? h?.remove?.();
 }
 
 export function ok(text: string, structuredContent?: unknown): ToolResult {
@@ -57,5 +59,9 @@ export function ok(text: string, structuredContent?: unknown): ToolResult {
 
 /** Agents surface structured errors to the user; silent failures are the listed footgun. */
 export function fail(code: string, message: string): ToolResult {
-  return { content: [{ type: 'text', text: `${code}: ${message}` }], structuredContent: { error: code, message }, isError: true };
+  return {
+    content: [{ type: 'text', text: `${code}: ${message}` }],
+    structuredContent: { error: code, message },
+    isError: true,
+  };
 }

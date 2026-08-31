@@ -1,9 +1,8 @@
-import { useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { emptyBoard, maxSupportBasis, reducer, visibleClaims } from './state/board';
 import { fixtureTopic, isDemoMode, runGather } from './data/gather';
 import { siftTools } from './mcp/siftTools';
 import { useTools } from './mcp/useTools';
-import { getModelContext } from './mcp/modelContext';
 import { ClaimCard } from './components/ClaimCard';
 import { SourceList } from './components/SourceList';
 
@@ -14,6 +13,15 @@ export default function App() {
 
   // The agent gets the same state object the UI renders.
   useTools(siftTools(state, dispatch), setRegistered);
+
+  // A judge opening ?demo=1 cold should land on a full board, not an empty one.
+  const autoloaded = useRef(false);
+  useEffect(() => {
+    if (autoloaded.current || !isDemoMode()) return;
+    autoloaded.current = true;
+    setDraft(fixtureTopic);
+    void gather(fixtureTopic);
+  }, []);
 
   const basis = useMemo(() => maxSupportBasis(state.claims, state.sources), [state.claims, state.sources]);
   const claims = visibleClaims(state);
@@ -35,12 +43,12 @@ export default function App() {
       <header className="masthead">
         <div className="wordmark">sift</div>
         <div className="agent-status">
-          {getModelContext() ? (
-            <span title={registered.join(', ')}>
-              agent connected · {registered.length || 6} tools
+          {registered.length > 0 ? (
+            <span title={registered.join(', ')} data-testid="agent-ready">
+              agent connected · {registered.length} tools
             </span>
           ) : (
-            <span className="warn">no agent — needs HTTPS</span>
+            <span className="warn">connecting agent…</span>
           )}
           {isDemoMode() && <span className="demo-chip">demo fixture</span>}
         </div>
