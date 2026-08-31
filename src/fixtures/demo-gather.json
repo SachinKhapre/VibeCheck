@@ -1,0 +1,132 @@
+{
+  "topic": "Is the Dell XPS 14 good for dev work?",
+  "sources": [
+    {
+      "id": "s1",
+      "title": "XPS 14 (9440) after 4 months as a daily driver — Linux + docker",
+      "url": "https://www.reddit.com/r/Dell/comments/xps14_four_months/",
+      "site": "reddit.com",
+      "snippet": "Long-term owner write-up: praises the display and build, reports the chassis getting hot under sustained container builds and the fans ramping audibly.",
+      "stance": "owner",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s2",
+      "title": "Ask HN: laptops that survive a full day of compiling?",
+      "url": "https://news.ycombinator.com/item?id=39001122",
+      "site": "news.ycombinator.com",
+      "snippet": "Thread comparing thin-and-light machines; several commenters say the XPS 14 throttles on sustained multi-core loads and that battery drops to 3-4 hours once a build starts.",
+      "stance": "owner",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s3",
+      "title": "Anyone else hate the capacitive function row?",
+      "url": "https://www.reddit.com/r/Dell/comments/xps_touchbar_row/",
+      "site": "reddit.com",
+      "snippet": "Owners split on the invisible function row and haptic trackpad: some adapt in a week, others report mis-hitting Escape in vim daily and returning the machine over it.",
+      "stance": "owner",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s4",
+      "title": "Best Laptops For Developers in 2026 — Our Top 9 Picks",
+      "url": "https://techgearpicks.example.com/best-developer-laptops-2026",
+      "site": "techgearpicks.example.com",
+      "snippet": "Listicle ranking the XPS 14 first for developers with no measurements, no named reviewer, and a buy button on every heading.",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s5",
+      "title": "XPS 14 Ubuntu 24.04 — what works and what doesn't",
+      "url": "https://www.reddit.com/r/linuxhardware/comments/xps14_ubuntu/",
+      "site": "reddit.com",
+      "snippet": "Owner reports sleep and the fingerprint reader needing kernel 6.9+, with everything else working out of the box after a firmware update.",
+      "stance": "owner",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s6",
+      "title": "Coming from a 16in MacBook Pro — is the XPS 14 a downgrade?",
+      "url": "https://www.reddit.com/r/webdev/comments/xps14_vs_mbp/",
+      "site": "reddit.com",
+      "snippet": "Mixed replies: people who mostly run editors and browsers are happy, people running local models or big test suites say they went back.",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "It throttles under sustained compile loads — fine in bursts, not for long builds",
+      "polarity": "negative",
+      "tags": ["performance", "thermals", "compiling", "throttling", "build"],
+      "pinned": false,
+      "evidence": [
+        { "sourceId": "s1", "line": "Chassis runs hot and fans ramp during long container builds" },
+        { "sourceId": "s2", "line": "Several commenters report sustained multi-core throttling" },
+        { "sourceId": "s6", "line": "People running big test suites said they switched back" }
+      ]
+    },
+    {
+      "id": "c2",
+      "text": "The display is the reason people keep it",
+      "polarity": "positive",
+      "tags": ["display", "screen", "oled"],
+      "pinned": false,
+      "evidence": [
+        { "sourceId": "s1", "line": "Calls the panel the standout after four months" },
+        { "sourceId": "s4", "line": "Ranks the screen first among its picks" },
+        { "sourceId": "s6", "line": "Even the returners said the screen was better than their MacBook" }
+      ]
+    },
+    {
+      "id": "c3",
+      "text": "Battery is a full day for editor-and-browser work, half that once you build",
+      "polarity": "mixed",
+      "tags": ["battery", "runtime", "power"],
+      "pinned": false,
+      "contestedBy": "c3b",
+      "evidence": [
+        { "sourceId": "s2", "line": "Drops to 3-4 hours once a build starts" },
+        { "sourceId": "s6", "line": "Editor-and-browser users report a comfortable full day" }
+      ]
+    },
+    {
+      "id": "c3b",
+      "text": "Counter: owners on Linux report noticeably worse idle battery than Windows",
+      "polarity": "negative",
+      "tags": ["battery", "linux", "power"],
+      "pinned": false,
+      "evidence": [{ "sourceId": "s5", "line": "Idle drain higher until power profiles are tuned" }]
+    },
+    {
+      "id": "c4",
+      "text": "The capacitive function row is the single most divisive thing about it",
+      "polarity": "negative",
+      "tags": ["keyboard", "function row", "escape", "vim", "trackpad"],
+      "pinned": false,
+      "evidence": [
+        { "sourceId": "s3", "line": "Owners split between adapting in a week and returning the machine" },
+        { "sourceId": "s1", "line": "Mentions still mis-hitting Escape months in" }
+      ]
+    },
+    {
+      "id": "c5",
+      "text": "Linux works, but only on a recent kernel and current firmware",
+      "polarity": "mixed",
+      "tags": ["linux", "ubuntu", "kernel", "drivers", "firmware"],
+      "pinned": false,
+      "evidence": [{ "sourceId": "s5", "line": "Sleep and fingerprint reader need kernel 6.9+" }]
+    },
+    {
+      "id": "c6",
+      "text": "It's the best developer laptop of 2026",
+      "polarity": "positive",
+      "tags": ["overall", "recommendation", "gaming"],
+      "pinned": false,
+      "evidence": [{ "sourceId": "s4", "line": "Ranks it first overall with no measurements given" }]
+    }
+  ]
+}
