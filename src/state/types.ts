@@ -48,6 +48,20 @@ export interface Claim {
 
 export type Status = 'empty' | 'gathering' | 'ready' | 'error';
 
+/** Who did it. The whole point of the board is that both parties act on the same state. */
+export type Actor = 'agent' | 'you';
+
+export interface ActivityEntry {
+  id: number;
+  at: number;
+  actor: Actor;
+  /** The WebMCP tool name, when an agent did it. */
+  tool?: string;
+  summary: string;
+  /** What it changed on the board, e.g. "2 claims lost support". */
+  effect?: string;
+}
+
 export interface BoardState {
   topic: string;
   focus?: string;
@@ -58,8 +72,12 @@ export interface BoardState {
   sources: Record<string, Source>;
   /** Natural-language constraints the user has stated, newest last. */
   constraints: string[];
+  /** Newest first. Rendered live so the human-agent loop is visible on screen. */
+  activity: ActivityEntry[];
   lastUpdated: number;
 }
+
+export type Standing = 'consensus' | 'contested' | 'thin' | 'weak' | 'unsupported';
 
 export interface Support {
   /** Distinct non-rejected sources backing the claim. */
@@ -67,6 +85,8 @@ export interface Support {
   trusted: number;
   rejected: number;
   owners: number;
-  /** 0..1, drives the support bar's width. */
+  /** Quality-weighted total: trusted counts more, low-signal counts less. */
+  raw: number;
+  /** 0..1 against the best-supported claim on the board. */
   weight: number;
 }

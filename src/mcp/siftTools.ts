@@ -65,10 +65,17 @@ export function siftTools(state: BoardState, dispatch: Dispatch<Action>): ToolDe
       },
       async execute({ topic, focus }: { topic: string; focus?: string }) {
         if (!topic?.trim()) return fail('missing_topic', 'Provide a topic to gather opinions about.');
-        dispatch({ type: 'gather:start', topic, focus });
+        dispatch({ type: 'gather:start', topic, focus, actor: 'agent', tool: 'gather_opinions' });
         try {
           const result = await runGather(topic, focus);
-          dispatch({ type: 'gather:success', claims: result.claims, sources: result.sources, demo: result.demo });
+          dispatch({
+            type: 'gather:success',
+            claims: result.claims,
+            sources: result.sources,
+            demo: result.demo,
+            actor: 'agent',
+            tool: 'gather_opinions',
+          });
           const summary = result.claims.map((c) => `- ${c.text} (${c.evidence.length} sources)`).join('\n');
           return ok(
             `Gathered ${result.sources.length} threads on "${topic}" and put ${result.claims.length} claims on the board.` +
@@ -78,7 +85,7 @@ export function siftTools(state: BoardState, dispatch: Dispatch<Action>): ToolDe
           );
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
-          dispatch({ type: 'gather:error', error: message });
+          dispatch({ type: 'gather:error', error: message, actor: 'agent', tool: 'gather_opinions' });
           return fail('gather_failed', message);
         }
       },
@@ -167,7 +174,7 @@ export function siftTools(state: BoardState, dispatch: Dispatch<Action>): ToolDe
         if (!['trusted', 'rejected', 'neutral'].includes(verdict)) {
           return fail('bad_verdict', `verdict must be "trusted", "rejected" or "neutral" — got "${verdict}".`);
         }
-        dispatch({ type: 'source:mark', sourceId, verdict, reason });
+        dispatch({ type: 'source:mark', sourceId, verdict, reason, actor: 'agent', tool: 'mark_source' });
 
         // Report support as it will be once the mark lands.
         const projected = { ...state.sources, [sourceId]: { ...source, verdict } };
@@ -201,10 +208,10 @@ export function siftTools(state: BoardState, dispatch: Dispatch<Action>): ToolDe
       execute({ constraint }: { constraint: string }) {
         if (!constraint?.trim()) return fail('missing_constraint', 'Provide the constraint the user stated.');
         if (constraint.trim().toLowerCase() === 'clear') {
-          dispatch({ type: 'board:clearConstraints' });
+          dispatch({ type: 'board:clearConstraints', actor: 'agent', tool: 'filter_board' });
           return ok('Cleared every constraint. The full board is showing again.');
         }
-        dispatch({ type: 'board:constrain', constraint });
+        dispatch({ type: 'board:constrain', constraint, actor: 'agent', tool: 'filter_board' });
         return ok(`Applied "${constraint}". Call get_board to see what is left.`, { constraint });
       },
     },
@@ -224,7 +231,7 @@ export function siftTools(state: BoardState, dispatch: Dispatch<Action>): ToolDe
       execute({ claimId, pinned = true }: { claimId: string; pinned?: boolean }) {
         const claim = claimById(claimId);
         if (!claim) return fail('unknown_claim', `No claim with id "${claimId}". Call get_board for current ids.`);
-        dispatch({ type: 'claim:pin', claimId, pinned });
+        dispatch({ type: 'claim:pin', claimId, pinned, actor: 'agent', tool: 'pin_claim' });
         return ok(`${pinned ? 'Pinned' : 'Unpinned'} "${claim.text}".`, { claimId, pinned });
       },
     },
