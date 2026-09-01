@@ -89,6 +89,14 @@ export function parseMeta(meta: string | undefined): Pick<ShapedSource, 'engagem
   return out;
 }
 
+/**
+ * SerpApi double-escapes some links, so a URL can arrive with a literal `=`
+ * where an `=` belongs. Left alone, the link 404s.
+ */
+export function cleanUrl(url: string): string {
+  return url.replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16))).trim();
+}
+
 export function hostOf(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, '');
@@ -98,7 +106,7 @@ export function hostOf(url: string): string {
 }
 
 export function shapeRow(row: any, idFor: (url: string) => string): ShapedSource | null {
-  const url: string = row.link ?? row.url ?? '';
+  const url = cleanUrl(row.link ?? row.url ?? '');
   if (!url) return null;
 
   const title: string = row.title ?? 'Untitled thread';

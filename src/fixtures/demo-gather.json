@@ -1,232 +1,209 @@
 {
-  "topic": "Is the Dell XPS 14 good for dev work?",
+  "topic": "is the dell xps 14 good for dev work?",
+  "recordedAt": "2026-09-01",
+  "note": "Real SerpApi google_forums response, shaped by api/_shape.ts. Claims are paraphrased from the returned snippets.",
   "sources": [
     {
-      "id": "s1",
-      "title": "XPS 14 (9440) after 4 months as a daily driver — Linux + docker",
-      "url": "https://www.reddit.com/r/Dell/comments/xps14_four_months/",
+      "id": "s4ff48e84",
+      "title": "Should I get a Dell XPS 14 as I am a software engineering student?",
+      "url": "https://www.reddit.com/r/DellXPS/comments/1acraqe/should_i_get_a_dell_xps_14_as_i_am_a_software/",
       "site": "reddit.com",
-      "snippet": "Long-term owner write-up: praises the display and build, reports the chassis getting hot under sustained container builds and the fans ramping audibly.",
-      "stance": "owner",
-      "verdict": "neutral",
-      "provenance": "Reddit · r/Dell",
+      "provenance": "Reddit · r/DellXPS",
+      "snippet": "A software engineering student weighing an upgrade from a base Macbook Air M1.",
       "tier": "discussion",
-      "engagement": 47,
-      "age": "4 months ago"
-    },
-    {
-      "id": "s2",
-      "title": "Ask HN: laptops that survive a full day of compiling?",
-      "url": "https://news.ycombinator.com/item?id=39001122",
-      "site": "news.ycombinator.com",
-      "snippet": "Thread comparing thin-and-light machines; several commenters say the XPS 14 throttles on sustained multi-core loads and that battery drops to 3-4 hours once a build starts.",
-      "stance": "owner",
-      "verdict": "neutral",
-      "provenance": "Hacker News",
-      "tier": "discussion",
-      "engagement": 120,
-      "age": "8 months ago"
-    },
-    {
-      "id": "s3",
-      "title": "Anyone else hate the capacitive function row?",
-      "url": "https://www.reddit.com/r/Dell/comments/xps_touchbar_row/",
-      "site": "reddit.com",
-      "snippet": "Owners split on the invisible function row and haptic trackpad: some adapt in a week, others report mis-hitting Escape in vim daily and returning the machine over it.",
-      "stance": "owner",
-      "verdict": "neutral",
-      "provenance": "Reddit · r/Dell",
-      "tier": "discussion",
-      "engagement": 60,
-      "age": "1 year ago"
-    },
-    {
-      "id": "s4",
-      "title": "Best Laptops For Developers in 2026 — Our Top 9 Picks",
-      "url": "https://techgearpicks.example.com/best-developer-laptops-2026",
-      "site": "techgearpicks.example.com",
-      "snippet": "Listicle ranking the XPS 14 first for developers with no measurements, no named reviewer, and a buy button on every heading.",
+      "engagement": 20,
+      "age": "2 years ago",
       "stance": "secondhand",
-      "verdict": "neutral",
-      "provenance": "TechGearPicks",
-      "tier": "low-signal"
+      "verdict": "neutral"
     },
     {
-      "id": "s5",
-      "title": "XPS 14 Ubuntu 24.04 — what works and what doesn't",
-      "url": "https://www.reddit.com/r/linuxhardware/comments/xps14_ubuntu/",
-      "site": "reddit.com",
-      "snippet": "Owner reports sleep and the fingerprint reader needing kernel 6.9+, with everything else working out of the box after a firmware update.",
+      "id": "sb13ce9c7",
+      "title": "The Dell XPS laptop, as we know and love it, is no more",
+      "url": "https://arstechnica.com/civis/threads/the-dell-xps-laptop-as-we-know-and-love-it-is-no-more.1498035/page-3",
+      "site": "arstechnica.com",
+      "provenance": "Ars Technica",
+      "snippet": "Readers describe what they actually want from it: purely a work laptop, integrated graphics acceptable, OLED extremely desirable.",
+      "tier": "discussion",
       "stance": "owner",
-      "verdict": "neutral",
-      "provenance": "Reddit · r/linuxhardware",
-      "tier": "discussion",
-      "engagement": 31,
-      "age": "2 months ago"
+      "verdict": "neutral"
     },
     {
-      "id": "s6",
-      "title": "Coming from a 16in MacBook Pro — is the XPS 14 a downgrade?",
-      "url": "https://www.reddit.com/r/webdev/comments/xps14_vs_mbp/",
-      "site": "reddit.com",
-      "snippet": "Mixed replies: people who mostly run editors and browsers are happy, people running local models or big test suites say they went back.",
-      "stance": "secondhand",
-      "verdict": "neutral",
-      "provenance": "Reddit · r/webdev",
+      "id": "sca61413e",
+      "title": "Dell reviving the XPS brand",
+      "url": "https://forums.macrumors.com/threads/dell-reviving-the-xps-brand.2475656/",
+      "site": "forums.macrumors.com",
+      "provenance": "MacRumors Forums",
+      "snippet": "Notes the new XPS 14 lands at roughly the same price as a similarly specced MacBook Pro, around $3,000 CAD.",
       "tier": "discussion",
-      "engagement": 88,
-      "age": "3 months ago"
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s33cec086",
+      "title": "Best laptop late 2024 for running Fedora?",
+      "url": "https://discussion.fedoraproject.org/t/best-laptop-late-2024-for-running-fedora/133698?page=2",
+      "site": "discussion.fedoraproject.org",
+      "provenance": "Fedora Discussion",
+      "snippet": "Credits Dell for working with the Linux community and shipping XPS DE machines with Ubuntu, then describes being soured by a past Dell laptop.",
+      "tier": "discussion",
+      "stance": "owner",
+      "verdict": "neutral"
+    },
+    {
+      "id": "sc50a0864",
+      "title": "XPS 8910 and the nightmare of the June 2026 secure boot update",
+      "url": "https://www.dell.com/community/en/conversations/xps-desktops/xps-8910-and-the-nightmare-of-june-2026-secure-boot-update/6a2f121d172f524e9c53981c",
+      "site": "dell.com",
+      "provenance": "Dell",
+      "snippet": "A secure boot update breaking a machine — but the XPS 8910 is a desktop, not the XPS 14.",
+      "tier": "discussion",
+      "stance": "owner",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s6b6fcf70",
+      "title": "Which laptop is good to buy?",
+      "url": "https://www.crazyengineers.com/threads/which-laptop-is-good-to-buy.44686",
+      "site": "crazyengineers.com",
+      "provenance": "CrazyEngineers",
+      "snippet": "Calls the XPS awesome on a ₹45,000 budget and recommends an Inspiron 14R — a thread from a different laptop generation entirely.",
+      "tier": "discussion",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "sedc9e8c3",
+      "title": "What are the key features of the Dell XPS 14 (2024) laptop?",
+      "url": "https://www.facebook.com/groups/1191303564397700/posts/3062361530625218/",
+      "site": "facebook.com",
+      "provenance": "Facebook · Tech hub",
+      "snippet": "Reads like a spec blurb: ideal for creatives and professionals, though limited ports and high pricing may deter some buyers.",
+      "tier": "low-signal",
+      "engagement": 1,
+      "age": "4 months ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "sa5a473ca",
+      "title": "Best Laptops for Software Development & Cloud Gaming",
+      "url": "https://www.justanswer.com/laptop/uoqn3-laptop-video-cards-intel-arc-iris-xe.html",
+      "site": "justanswer.com",
+      "provenance": "JustAnswer",
+      "snippet": "Recommends the XPS 13 for its premium build in a generic roundup covering both development and cloud gaming.",
+      "tier": "low-signal",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "sfbe4e81d",
+      "title": "Laptop recommendations for work-from-home use with AI",
+      "url": "https://www.facebook.com/groups/captainsoftech/posts/1724691335491797/",
+      "site": "facebook.com",
+      "provenance": "Facebook · Computers & IT Tech Support",
+      "snippet": "Someone starting a new job asking for recommendations, comfortable with both Dell and Apple.",
+      "tier": "low-signal",
+      "engagement": 20,
+      "age": "3 weeks ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "sf7ff145c",
+      "title": "Is the Dell XPS 15 good for programming and productive work?",
+      "url": "https://www.quora.com/Is-the-Dell-XPS-15-good-for-programming-and-productive-work",
+      "site": "quora.com",
+      "provenance": "Quora",
+      "snippet": "The snippet only restates the question, and it is about the XPS 15.",
+      "tier": "low-signal",
+      "stance": "secondhand",
+      "verdict": "neutral"
     }
   ],
   "claims": [
     {
       "id": "c1",
-      "text": "It throttles under sustained compile loads — fine in bursts, not for long builds",
+      "text": "It is priced against a MacBook Pro, and people notice",
       "polarity": "negative",
-      "tags": [
-        "performance",
-        "thermals",
-        "compiling",
-        "throttling",
-        "build"
-      ],
+      "tags": ["price", "cost", "macbook", "value", "expensive"],
       "pinned": false,
       "evidence": [
-        {
-          "sourceId": "s1",
-          "line": "Chassis runs hot and fans ramp during long container builds"
-        },
-        {
-          "sourceId": "s2",
-          "line": "Several commenters report sustained multi-core throttling"
-        },
-        {
-          "sourceId": "s6",
-          "line": "People running big test suites said they switched back"
-        }
+        { "sourceId": "sca61413e", "line": "Roughly the same price as a similarly specced MacBook Pro, about $3,000 CAD" },
+        { "sourceId": "sedc9e8c3", "line": "High pricing named as the thing that may deter buyers" }
       ]
     },
     {
       "id": "c2",
-      "text": "The display is the reason people keep it",
-      "polarity": "positive",
-      "tags": [
-        "display",
-        "screen",
-        "oled"
-      ],
+      "text": "People want it as a work machine, not a performance machine",
+      "polarity": "mixed",
+      "tags": ["work", "graphics", "gaming", "oled", "display"],
       "pinned": false,
       "evidence": [
-        {
-          "sourceId": "s1",
-          "line": "Calls the panel the standout after four months"
-        },
-        {
-          "sourceId": "s4",
-          "line": "Ranks the screen first among its picks"
-        },
-        {
-          "sourceId": "s6",
-          "line": "Even the returners said the screen was better than their MacBook"
-        }
+        { "sourceId": "sb13ce9c7", "line": "Purely a work laptop; integrated graphics acceptable, OLED extremely desirable" },
+        { "sourceId": "sa5a473ca", "line": "Grouped with cloud gaming in a generic roundup" }
       ]
     },
     {
       "id": "c3",
-      "text": "Battery is a full day for editor-and-browser work, half that once you build",
+      "text": "Dell's Linux track record is the reason to buy and the reason not to",
       "polarity": "mixed",
-      "tags": [
-        "battery",
-        "runtime",
-        "power"
-      ],
+      "tags": ["linux", "fedora", "ubuntu", "drivers"],
       "pinned": false,
       "contestedBy": "c3b",
       "evidence": [
-        {
-          "sourceId": "s2",
-          "line": "Drops to 3-4 hours once a build starts"
-        },
-        {
-          "sourceId": "s6",
-          "line": "Editor-and-browser users report a comfortable full day"
-        }
+        { "sourceId": "s33cec086", "line": "Credits Dell for working with the Linux community and shipping XPS DE with Ubuntu" }
       ]
     },
     {
       "id": "c3b",
-      "text": "Counter: owners on Linux report noticeably worse idle battery than Windows",
+      "text": "Counter: a past Dell laptop soured the same person on the brand",
       "polarity": "negative",
-      "tags": [
-        "battery",
-        "linux",
-        "power"
-      ],
+      "tags": ["linux", "reliability", "brand"],
       "pinned": false,
-      "evidence": [
-        {
-          "sourceId": "s5",
-          "line": "Idle drain higher until power profiles are tuned"
-        }
-      ]
+      "evidence": [{ "sourceId": "s33cec086", "line": "Describes being soured by an earlier Dell machine" }]
     },
     {
       "id": "c4",
-      "text": "The capacitive function row is the single most divisive thing about it",
+      "text": "Limited ports are the recurring practical complaint",
       "polarity": "negative",
-      "tags": [
-        "keyboard",
-        "function row",
-        "escape",
-        "vim",
-        "trackpad"
-      ],
+      "tags": ["ports", "connectivity", "dongles"],
       "pinned": false,
-      "evidence": [
-        {
-          "sourceId": "s3",
-          "line": "Owners split between adapting in a week and returning the machine"
-        },
-        {
-          "sourceId": "s1",
-          "line": "Mentions still mis-hitting Escape months in"
-        }
-      ]
+      "evidence": [{ "sourceId": "sedc9e8c3", "line": "Limited ports listed alongside high pricing as the drawbacks" }]
     },
     {
       "id": "c5",
-      "text": "Linux works, but only on a recent kernel and current firmware",
-      "polarity": "mixed",
-      "tags": [
-        "linux",
-        "ubuntu",
-        "kernel",
-        "drivers",
-        "firmware"
-      ],
+      "text": "XPS is a safe premium pick",
+      "polarity": "positive",
+      "tags": ["premium", "build quality", "recommendation", "safe"],
       "pinned": false,
       "evidence": [
-        {
-          "sourceId": "s5",
-          "line": "Sleep and fingerprint reader need kernel 6.9+"
-        }
+        { "sourceId": "sa5a473ca", "line": "Calls the XPS 13 renowned for premium build and performance" },
+        { "sourceId": "s6b6fcf70", "line": "Says the XPS is awesome — on a ₹45,000 budget" },
+        { "sourceId": "sedc9e8c3", "line": "Ideal for creatives and professionals" }
       ]
     },
     {
       "id": "c6",
-      "text": "It's the best developer laptop of 2026",
-      "polarity": "positive",
-      "tags": [
-        "overall",
-        "recommendation",
-        "gaming"
-      ],
+      "text": "Most of what surfaces is people asking, not owners reporting",
+      "polarity": "mixed",
+      "tags": ["evidence quality", "owners", "questions"],
       "pinned": false,
       "evidence": [
-        {
-          "sourceId": "s4",
-          "line": "Ranks it first overall with no measurements given"
-        }
+        { "sourceId": "s4ff48e84", "line": "A student asking whether to buy, not someone who owns one" },
+        { "sourceId": "sfbe4e81d", "line": "Someone starting a new job asking for recommendations" },
+        { "sourceId": "sf7ff145c", "line": "Snippet only restates the question, and about the XPS 15" }
+      ]
+    },
+    {
+      "id": "c7",
+      "text": "The XPS name covers machines that have little to do with each other",
+      "polarity": "mixed",
+      "tags": ["drift", "models", "xps 13", "xps 15", "desktop"],
+      "pinned": false,
+      "evidence": [
+        { "sourceId": "sc50a0864", "line": "A secure boot failure on the XPS 8910, which is a desktop" },
+        { "sourceId": "s6b6fcf70", "line": "A budget thread recommending an Inspiron 14R" },
+        { "sourceId": "sf7ff145c", "line": "About the XPS 15, not the 14" }
       ]
     }
   ]
