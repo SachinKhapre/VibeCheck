@@ -4,11 +4,21 @@ export type Verdict = 'neutral' | 'trusted' | 'rejected';
 
 export type Stance = 'owner' | 'secondhand';
 
+export type Tier = 'discussion' | 'low-signal';
+
 export interface Source {
   id: string;
   title: string;
   url: string;
   site: string;
+  /** "Reddit · r/DellXPS" when SerpApi gives it, else the hostname. */
+  provenance: string;
+  /** Whether this is somewhere people talk to each other, or SEO filler. */
+  tier: Tier;
+  /** Comments/answers the thread reports, when it reports any. */
+  engagement?: number;
+  /** "11 months ago", as SerpApi worded it. */
+  age?: string;
   /** Paraphrased, never a verbatim dump of the post. */
   snippet: string;
   stance: Stance;

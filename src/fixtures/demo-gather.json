@@ -8,7 +8,11 @@
       "site": "reddit.com",
       "snippet": "Long-term owner write-up: praises the display and build, reports the chassis getting hot under sustained container builds and the fans ramping audibly.",
       "stance": "owner",
-      "verdict": "neutral"
+      "verdict": "neutral",
+      "provenance": "Reddit · r/Dell",
+      "tier": "discussion",
+      "engagement": 47,
+      "age": "4 months ago"
     },
     {
       "id": "s2",
@@ -17,7 +21,11 @@
       "site": "news.ycombinator.com",
       "snippet": "Thread comparing thin-and-light machines; several commenters say the XPS 14 throttles on sustained multi-core loads and that battery drops to 3-4 hours once a build starts.",
       "stance": "owner",
-      "verdict": "neutral"
+      "verdict": "neutral",
+      "provenance": "Hacker News",
+      "tier": "discussion",
+      "engagement": 120,
+      "age": "8 months ago"
     },
     {
       "id": "s3",
@@ -26,7 +34,11 @@
       "site": "reddit.com",
       "snippet": "Owners split on the invisible function row and haptic trackpad: some adapt in a week, others report mis-hitting Escape in vim daily and returning the machine over it.",
       "stance": "owner",
-      "verdict": "neutral"
+      "verdict": "neutral",
+      "provenance": "Reddit · r/Dell",
+      "tier": "discussion",
+      "engagement": 60,
+      "age": "1 year ago"
     },
     {
       "id": "s4",
@@ -35,7 +47,9 @@
       "site": "techgearpicks.example.com",
       "snippet": "Listicle ranking the XPS 14 first for developers with no measurements, no named reviewer, and a buy button on every heading.",
       "stance": "secondhand",
-      "verdict": "neutral"
+      "verdict": "neutral",
+      "provenance": "TechGearPicks",
+      "tier": "low-signal"
     },
     {
       "id": "s5",
@@ -44,7 +58,11 @@
       "site": "reddit.com",
       "snippet": "Owner reports sleep and the fingerprint reader needing kernel 6.9+, with everything else working out of the box after a firmware update.",
       "stance": "owner",
-      "verdict": "neutral"
+      "verdict": "neutral",
+      "provenance": "Reddit · r/linuxhardware",
+      "tier": "discussion",
+      "engagement": 31,
+      "age": "2 months ago"
     },
     {
       "id": "s6",
@@ -53,7 +71,11 @@
       "site": "reddit.com",
       "snippet": "Mixed replies: people who mostly run editors and browsers are happy, people running local models or big test suites say they went back.",
       "stance": "secondhand",
-      "verdict": "neutral"
+      "verdict": "neutral",
+      "provenance": "Reddit · r/webdev",
+      "tier": "discussion",
+      "engagement": 88,
+      "age": "3 months ago"
     }
   ],
   "claims": [
@@ -61,72 +83,151 @@
       "id": "c1",
       "text": "It throttles under sustained compile loads — fine in bursts, not for long builds",
       "polarity": "negative",
-      "tags": ["performance", "thermals", "compiling", "throttling", "build"],
+      "tags": [
+        "performance",
+        "thermals",
+        "compiling",
+        "throttling",
+        "build"
+      ],
       "pinned": false,
       "evidence": [
-        { "sourceId": "s1", "line": "Chassis runs hot and fans ramp during long container builds" },
-        { "sourceId": "s2", "line": "Several commenters report sustained multi-core throttling" },
-        { "sourceId": "s6", "line": "People running big test suites said they switched back" }
+        {
+          "sourceId": "s1",
+          "line": "Chassis runs hot and fans ramp during long container builds"
+        },
+        {
+          "sourceId": "s2",
+          "line": "Several commenters report sustained multi-core throttling"
+        },
+        {
+          "sourceId": "s6",
+          "line": "People running big test suites said they switched back"
+        }
       ]
     },
     {
       "id": "c2",
       "text": "The display is the reason people keep it",
       "polarity": "positive",
-      "tags": ["display", "screen", "oled"],
+      "tags": [
+        "display",
+        "screen",
+        "oled"
+      ],
       "pinned": false,
       "evidence": [
-        { "sourceId": "s1", "line": "Calls the panel the standout after four months" },
-        { "sourceId": "s4", "line": "Ranks the screen first among its picks" },
-        { "sourceId": "s6", "line": "Even the returners said the screen was better than their MacBook" }
+        {
+          "sourceId": "s1",
+          "line": "Calls the panel the standout after four months"
+        },
+        {
+          "sourceId": "s4",
+          "line": "Ranks the screen first among its picks"
+        },
+        {
+          "sourceId": "s6",
+          "line": "Even the returners said the screen was better than their MacBook"
+        }
       ]
     },
     {
       "id": "c3",
       "text": "Battery is a full day for editor-and-browser work, half that once you build",
       "polarity": "mixed",
-      "tags": ["battery", "runtime", "power"],
+      "tags": [
+        "battery",
+        "runtime",
+        "power"
+      ],
       "pinned": false,
       "contestedBy": "c3b",
       "evidence": [
-        { "sourceId": "s2", "line": "Drops to 3-4 hours once a build starts" },
-        { "sourceId": "s6", "line": "Editor-and-browser users report a comfortable full day" }
+        {
+          "sourceId": "s2",
+          "line": "Drops to 3-4 hours once a build starts"
+        },
+        {
+          "sourceId": "s6",
+          "line": "Editor-and-browser users report a comfortable full day"
+        }
       ]
     },
     {
       "id": "c3b",
       "text": "Counter: owners on Linux report noticeably worse idle battery than Windows",
       "polarity": "negative",
-      "tags": ["battery", "linux", "power"],
+      "tags": [
+        "battery",
+        "linux",
+        "power"
+      ],
       "pinned": false,
-      "evidence": [{ "sourceId": "s5", "line": "Idle drain higher until power profiles are tuned" }]
+      "evidence": [
+        {
+          "sourceId": "s5",
+          "line": "Idle drain higher until power profiles are tuned"
+        }
+      ]
     },
     {
       "id": "c4",
       "text": "The capacitive function row is the single most divisive thing about it",
       "polarity": "negative",
-      "tags": ["keyboard", "function row", "escape", "vim", "trackpad"],
+      "tags": [
+        "keyboard",
+        "function row",
+        "escape",
+        "vim",
+        "trackpad"
+      ],
       "pinned": false,
       "evidence": [
-        { "sourceId": "s3", "line": "Owners split between adapting in a week and returning the machine" },
-        { "sourceId": "s1", "line": "Mentions still mis-hitting Escape months in" }
+        {
+          "sourceId": "s3",
+          "line": "Owners split between adapting in a week and returning the machine"
+        },
+        {
+          "sourceId": "s1",
+          "line": "Mentions still mis-hitting Escape months in"
+        }
       ]
     },
     {
       "id": "c5",
       "text": "Linux works, but only on a recent kernel and current firmware",
       "polarity": "mixed",
-      "tags": ["linux", "ubuntu", "kernel", "drivers", "firmware"],
+      "tags": [
+        "linux",
+        "ubuntu",
+        "kernel",
+        "drivers",
+        "firmware"
+      ],
       "pinned": false,
-      "evidence": [{ "sourceId": "s5", "line": "Sleep and fingerprint reader need kernel 6.9+" }]
+      "evidence": [
+        {
+          "sourceId": "s5",
+          "line": "Sleep and fingerprint reader need kernel 6.9+"
+        }
+      ]
     },
     {
       "id": "c6",
       "text": "It's the best developer laptop of 2026",
       "polarity": "positive",
-      "tags": ["overall", "recommendation", "gaming"],
+      "tags": [
+        "overall",
+        "recommendation",
+        "gaming"
+      ],
       "pinned": false,
-      "evidence": [{ "sourceId": "s4", "line": "Ranks it first overall with no measurements given" }]
+      "evidence": [
+        {
+          "sourceId": "s4",
+          "line": "Ranks it first overall with no measurements given"
+        }
+      ]
     }
   ]
 }

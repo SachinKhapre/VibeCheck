@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
+import { countUsable, rankSources, shapeRow, type ShapedSource } from './_shape';
 
 /**
  * Gathers discussion-source results for a topic.
@@ -16,17 +17,11 @@ import { join } from 'node:path';
  * Returns { sources: RawSource[] }. Claim extraction happens in /api/extract.
  */
 
-interface RawSource {
-  id: string;
-  title: string;
-  url: string;
-  site: string;
-  snippet: string;
-}
+type RawSource = ShapedSource;
 
 const DISCUSSION_SITES = ['reddit.com', 'news.ycombinator.com', 'stackexchange.com', 'lobste.rs'];
 const THREAD_CAP = 10; // latency is the enemy of a 3-minute demo
-const MIN_FORUM_RESULTS = 5; // below this, forums was too thin and the fallback is worth a credit
+const MIN_USABLE_RESULTS = 4; // usable discussion-grade rows, not raw count — raw count is always ~10
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 /** Disk cache for local dev — survives restarts, so iterating on the UI costs zero credits. */
@@ -81,14 +76,6 @@ function writeCache(query: string, sources: RawSource[]): void {
   }
 }
 
-function hostOf(url: string): string {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return 'unknown';
-  }
-}
-
 function idFor(url: string): string {
   return `s${createHash('sha1').update(url).digest('hex').slice(0, 8)}`;
 }
@@ -111,17 +98,9 @@ async function serpapi(params: Record<string, string>, key: string): Promise<any
 /** Google Forums API — purpose-built for discussion results, so it leads and usually stands alone. */
 async function fromForums(query: string, key: string): Promise<RawSource[]> {
   const data = await serpapi({ engine: 'google_forums', q: query }, key);
-  const rows: any[] = data.forum_results ?? data.organic_results ?? [];
-  return rows.map((r) => {
-    const url = r.link ?? r.url ?? '';
-    return {
-      id: idFor(url),
-      title: r.title ?? 'Untitled thread',
-      url,
-      site: hostOf(url),
-      snippet: [r.snippet, ...(r.extensions ?? [])].filter(Boolean).join(' ').slice(0, 600),
-    };
-  });
+  // google_forums returns `organic_results`, despite the engine name.
+  const rows: any[] = data.organic_results ?? data.forum_results ?? [];
+  return rows.map((r) => shapeRow(r, idFor)).filter((s): s is RawSource => s !== null);
 }
 
 /** Plain Google Search, biased toward discussion sites. Costs a second credit — only when forums was thin. */
@@ -129,13 +108,7 @@ async function fromSearch(query: string, key: string): Promise<RawSource[]> {
   const biased = `${query} (${DISCUSSION_SITES.map((s) => `site:${s}`).join(' OR ')})`;
   const data = await serpapi({ engine: 'google', q: biased, num: '20' }, key);
   const rows: any[] = data.organic_results ?? [];
-  return rows.map((r) => ({
-    id: idFor(r.link ?? ''),
-    title: r.title ?? 'Untitled thread',
-    url: r.link ?? '',
-    site: hostOf(r.link ?? ''),
-    snippet: (r.snippet ?? '').slice(0, 600),
-  }));
+  return rows.map((r) => shapeRow(r, idFor)).filter((s): s is RawSource => s !== null);
 }
 
 function dedupe(lists: RawSource[][]): RawSource[] {
@@ -146,7 +119,7 @@ function dedupe(lists: RawSource[][]): RawSource[] {
       seen.set(s.id, s);
     }
   }
-  return [...seen.values()].slice(0, THREAD_CAP);
+  return rankSources([...seen.values()]).slice(0, THREAD_CAP);
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -176,7 +149,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     let sources = dedupe([forums]);
     let credits = 1;
 
-    if (forums.length < MIN_FORUM_RESULTS) {
+    if (countUsable(sources) < MIN_USABLE_RESULTS) {
       try {
         const search = await fromSearch(query, key);
         sources = dedupe([forums, search]);

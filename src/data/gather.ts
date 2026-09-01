@@ -42,7 +42,7 @@ async function postJson(url: string, body: unknown): Promise<any> {
 export async function runGather(topic: string, focus?: string): Promise<GatherResult> {
   if (isDemoMode()) return fixtureResult('Demo mode — serving the cached fixture.');
 
-  let raw: Array<Omit<Source, 'stance' | 'verdict'>>;
+  let raw: Array<Omit<Source, 'stance' | 'verdict' | 'snippet'> & { snippet: string }>;
   try {
     const data = await postJson('/api/gather', { topic, focus });
     raw = data.sources ?? [];
@@ -52,7 +52,12 @@ export async function runGather(topic: string, focus?: string): Promise<GatherRe
 
   if (raw.length === 0) return { claims: [], sources: [], demo: false, note: 'No discussion threads found for that topic.' };
 
-  const sources: Source[] = raw.map((s) => ({ ...s, stance: 'secondhand', verdict: 'neutral' }));
+  // Discussion-grade threads read as hands-on until extraction says otherwise.
+  const sources: Source[] = raw.map((s) => ({
+    ...s,
+    stance: s.tier === 'discussion' ? 'owner' : 'secondhand',
+    verdict: 'neutral',
+  }));
 
   try {
     const data = await postJson('/api/extract', { topic, focus, sources });

@@ -103,3 +103,7 @@ body {
 .source-title:hover { text-decoration: underline; }
 .sources .meta, .sources .reason { color: var(--dim); font-size: 12px; }
 .verdict-actions { display: flex; }
+
+.low-signal-head { margin-top: 22px; display: flex; gap: 6px; align-items: baseline; }
+.low-signal-head span { opacity: 0.6; }
+.sources li.low-signal .source-title { color: var(--dim); }
