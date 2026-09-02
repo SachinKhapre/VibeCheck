@@ -21,10 +21,14 @@ export const maxDuration = 60;
 
 const ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
 
-/** Free models that support strict json_schema output, best first. Override with OPENROUTER_MODEL. */
+/**
+ * Tried in order. Free models lead, so a working free tier costs nothing; the paid
+ * model is insurance for when they are throttled, at roughly $0.0006 a gather.
+ * Override wholesale with OPENROUTER_MODEL.
+ */
 const DEFAULT_MODELS = [
   'z-ai/glm-5.2:free',
-  'dots-studio/dots-3-note-preview:free',
+  'openai/gpt-oss-120b',
   'nvidia/nemotron-3-super-120b-a12b:free',
 ];
 
@@ -79,18 +83,26 @@ WHAT COUNTS AS A CLAIM
 - A claim is a substantive statement about the thing being decided on: what it is good at, what it is bad at, what surprised people, what it costs.
 - A thread where somebody asks a question is not a claim. "Someone was considering buying it" tells the reader nothing. Leave such threads unused — still marked relevant — rather than inventing a claim from them.
 - One source saying one sentence is one claim. If that sentence names both an upside and a downside, that is a single claim with polarity "mixed" — never split it into a positive claim and a negative claim.
-- Prefer claims that more than one source touches. A board of three well-supported claims beats seven thin ones. Do not pad.
+- Aim for 4 to 6 claims when the material supports it. Claims touched by more than one source are the most valuable, but a single source making a specific, substantive point is a legitimate claim on its own — report it and let the support bar show that it rests on one voice.
+- What does not earn a claim: restating the question, noting that someone was shopping, or a generic "it is a good laptop" with nothing behind it. If after honest effort there are only two real claims in the material, return two. Never invent a fifth.
 
 EVIDENCE LINES
 - Write every evidence line in your own words. If your line reuses a distinctive phrase from the snippet, rewrite it until it does not.
 - Never copy a snippet, or a clause of one, verbatim. This matters for copyright and it reads badly.
 - Say what that specific source contributes to the claim, in one short line.
+- Snippets are search results, cut off mid-sentence, often ending in "...". Do not finish the sentence for them. If a snippet trails off before saying what went wrong, you do not know what went wrong — say only what it actually got out. Inventing the ending is a fabrication even when your guess is plausible.
+- An evidence line may only use what is in THAT source's own snippet. Never carry a detail from one source into another source's line. If a fact appears in only one snippet, only that source may be cited for it. Attributing something to a source that did not say it is the worst error you can make here.
 
 RELEVANCE — this is a separate question from whether you can draw a claim from it
 - Relevant means the thread could inform this decision. Keep anything where people discuss the thing itself, the product line it belongs to, or living with it day to day. Keep threads that are relevant but yield no claim; not every kept source has to appear in the claims.
-- Mark not relevant only for a clear mismatch: a different product, a different category (a desktop when the question is about a laptop), a different market or country, or a thread that merely name-drops the thing while discussing something else.
-- A thread being a question, being old, or being thin is NOT grounds for marking it irrelevant. Those are reasons it may not support a claim. Keep it and leave it out of the claims.
-- When you are unsure, keep it. The reader decides what to trust; your job is not to prune the evidence for them.
+- dropReason must name the actual mismatch in a few words: "about the XPS 15", "a desktop, not a laptop", "generic recommendation thread". Never just "different model".
+- Mark not relevant when the thread is about a materially different thing. Be willing to do this — search drift is common and an off-topic thread on the board reads as evidence when it is not. Specifically drop:
+  - a different model or trim than the one asked about (an XPS 13 or XPS 15 thread when the question is the XPS 14),
+  - a different category (a desktop when the question is a laptop),
+  - a different market, country, or era than the question implies,
+  - a thread that only name-drops the thing while discussing something else.
+- A thread being a question, being old, or being thin is NOT grounds for marking it irrelevant. Those are reasons it may not support a claim — keep it, and simply leave it out of the claims.
+- Threads about the immediate product line or family, where the discussion still bears on this decision, are relevant. Keep those.
 
 STANCE
 - "owner" means the person speaks from hands-on use of the thing itself.
@@ -203,6 +215,8 @@ export async function callOpenRouter(prompt: string, key: string): Promise<CallR
         },
         body: JSON.stringify({
           model,
+          // OpenRouter may route to a slow host for a given model; ask for the fast one.
+          provider: { sort: 'throughput' },
           temperature: 0.2,
           max_tokens: 4000,
           response_format: {
