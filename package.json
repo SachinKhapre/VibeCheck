@@ -10,7 +10,6 @@
     "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.123.0",
     "@mcp-b/webmcp-polyfill": "latest",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

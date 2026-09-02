@@ -17,7 +17,7 @@ Requires Node 20+.
 Keys go in `.env` (see `.env.example`) and stay server-side — both API routes run as serverless functions.
 
 - `SERPAPI_KEY` — SerpApi, used by `/api/gather`
-- `ANTHROPIC_API_KEY` — used by `/api/extract`
+- `OPENROUTER_API_KEY` — used by `/api/extract`. Works on OpenRouter's free models; `OPENROUTER_MODEL` overrides the fallback chain.
 
 ## Demo mode
 
@@ -44,7 +44,7 @@ The tools and the UI share one reducer and one state object ([src/state/board.ts
 
 ```
 api/gather.ts          SerpApi (google_forums + discussion-biased google), session-cached
-api/extract.ts         Claude, schema-constrained: relevance, stance, claim clustering
+api/extract.ts         OpenRouter, schema-constrained: relevance, stance, claim clustering
 api/_shape.ts          shared shaping of raw SerpApi rows
 src/state/             the one state shape and the one reducer
 src/mcp/               modelContext binding, registration hook, the six tool definitions
