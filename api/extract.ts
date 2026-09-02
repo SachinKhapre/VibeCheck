@@ -22,7 +22,11 @@ export const maxDuration = 60;
 const ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
 
 /** Free models that support strict json_schema output, best first. Override with OPENROUTER_MODEL. */
-const DEFAULT_MODELS = ['z-ai/glm-5.2:free', 'nvidia/nemotron-3-super-120b-a12b:free'];
+const DEFAULT_MODELS = [
+  'z-ai/glm-5.2:free',
+  'dots-studio/dots-3-note-preview:free',
+  'nvidia/nemotron-3-super-120b-a12b:free',
+];
 
 const MODELS = (process.env.OPENROUTER_MODEL ?? DEFAULT_MODELS.join(','))
   .split(',')
@@ -71,13 +75,30 @@ const JSON_SCHEMA = (() => {
 
 const SYSTEM = `You read discussion threads and report what people actually said.
 
-Rules:
-- Paraphrase. Never reproduce a post verbatim — both for copyright and because quotes make a worse board.
-- Only assert what the snippets support. You are given short search snippets, not full threads, so stay close to them and do not infer detail that isn't there.
-- Be strict about relevance. Search results drift: a query about one product returns threads about a different model, a different product line, or a different country. Mark those not relevant and say why in one clause.
-- A thread where someone is asking for recommendations is secondhand, not an owner, even when it is on-topic.
-- Cluster into 3 to 7 claims. A claim is something more than one source touches, or one thing a source says with real specificity. Do not pad the list.
-- If two claims genuinely conflict, set contestedBy on the stronger one to the id of the weaker one. Leave it as an empty string otherwise. Never point a claim at itself.
+WHAT COUNTS AS A CLAIM
+- A claim is a substantive statement about the thing being decided on: what it is good at, what it is bad at, what surprised people, what it costs.
+- A thread where somebody asks a question is not a claim. "Someone was considering buying it" tells the reader nothing. Leave such threads unused — still marked relevant — rather than inventing a claim from them.
+- One source saying one sentence is one claim. If that sentence names both an upside and a downside, that is a single claim with polarity "mixed" — never split it into a positive claim and a negative claim.
+- Prefer claims that more than one source touches. A board of three well-supported claims beats seven thin ones. Do not pad.
+
+EVIDENCE LINES
+- Write every evidence line in your own words. If your line reuses a distinctive phrase from the snippet, rewrite it until it does not.
+- Never copy a snippet, or a clause of one, verbatim. This matters for copyright and it reads badly.
+- Say what that specific source contributes to the claim, in one short line.
+
+RELEVANCE — this is a separate question from whether you can draw a claim from it
+- Relevant means the thread could inform this decision. Keep anything where people discuss the thing itself, the product line it belongs to, or living with it day to day. Keep threads that are relevant but yield no claim; not every kept source has to appear in the claims.
+- Mark not relevant only for a clear mismatch: a different product, a different category (a desktop when the question is about a laptop), a different market or country, or a thread that merely name-drops the thing while discussing something else.
+- A thread being a question, being old, or being thin is NOT grounds for marking it irrelevant. Those are reasons it may not support a claim. Keep it and leave it out of the claims.
+- When you are unsure, keep it. The reader decides what to trust; your job is not to prune the evidence for them.
+
+STANCE
+- "owner" means the person speaks from hands-on use of the thing itself.
+- Someone asking for recommendations is secondhand. So is a spec summary, a roundup, and anyone relaying what they have read. When in doubt, secondhand.
+
+FORMAT
+- tags: 2 to 5 single lowercase words. No hyphens, no multi-word phrases. These are matched against what the reader types, so use the words a person would actually say: price, battery, ports, linux, build, screen.
+- If two claims genuinely conflict, set contestedBy on the stronger one to the id of the weaker one. Otherwise leave it an empty string. Never point a claim at itself.
 - Every evidence entry must cite a source id from the input. Do not invent ids.
 - Return only the JSON object. No prose, no explanation, no markdown fences.`;
 
@@ -108,11 +129,18 @@ export function parseExtraction(raw: string): Parsed {
  */
 export function shapeExtraction(parsed: Parsed, sources: ShapedSource[]) {
   const given = new Set(sources.map((s) => s.id));
+  const assessed = new Map(parsed.sources.filter((s) => given.has(s.id)).map((s) => [s.id, s]));
 
-  const kept = parsed.sources.filter((s) => s.relevant && given.has(s.id));
+  // A source the model simply failed to mention has not been judged off-topic — it has
+  // not been judged at all. Keep it, unowned, rather than making a thread disappear
+  // with no reason next to it.
+  const kept = sources
+    .filter((s) => assessed.get(s.id)?.relevant !== false)
+    .map((s) => ({ id: s.id, stance: assessed.get(s.id)?.stance ?? ('secondhand' as const) }));
   const keptIds = new Set(kept.map((s) => s.id));
-  const dropped = parsed.sources
-    .filter((s) => !s.relevant && given.has(s.id))
+
+  const dropped = [...assessed.values()]
+    .filter((s) => !s.relevant)
     .map((s) => ({ id: s.id, reason: s.dropReason }));
 
   const claimIds = new Set(parsed.claims.map((c) => c.id));
@@ -155,6 +183,8 @@ ${JSON.stringify(brief, null, 2)}`;
 interface CallResult {
   parsed: Parsed;
   model: string;
+  /** Models that failed before this one answered. Surfaced so a silent fallback is visible. */
+  attempts: string[];
   usage?: { prompt_tokens?: number; completion_tokens?: number };
 }
 
@@ -198,7 +228,7 @@ export async function callOpenRouter(prompt: string, key: string): Promise<CallR
         continue;
       }
 
-      return { parsed: parseExtraction(content), model, usage: body?.usage };
+      return { parsed: parseExtraction(content), model, usage: body?.usage, attempts: failures };
     } catch (err) {
       failures.push(`${model}: ${err instanceof Error ? err.message : String(err)}`);
     }
@@ -235,12 +265,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { parsed, model, usage } = await callOpenRouter(buildPrompt(topic, focus, sources), key);
+    const { parsed, model, usage, attempts } = await callOpenRouter(buildPrompt(topic, focus, sources), key);
+    if (attempts.length > 0) console.warn('[extract] fell back:', attempts.join('; '));
     const { claims, kept, dropped } = shapeExtraction(parsed, sources);
 
     return res.status(200).json({
       claims,
-      sources: kept.map((s) => ({ id: s.id, stance: s.stance })),
+      sources: kept,
       dropped,
       model,
       usage,
