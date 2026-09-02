@@ -140,3 +140,39 @@ export function rankSources(sources: ShapedSource[]): ShapedSource[] {
 export function countUsable(sources: ShapedSource[]): number {
   return sources.filter((s) => s.usable && s.tier === 'discussion').length;
 }
+
+/**
+ * google_forums matches near-literally, so a natural-language question returns
+ * nothing at all: "is Mac mini a good device for developers?" is Fully empty,
+ * while "mac mini developers" finds threads with 87 answers.
+ *
+ * Strip the question scaffolding and keep the nouns. The user's full question is
+ * still what extraction sees — only the search string is condensed.
+ */
+const QUESTION_WORDS = /^(is|are|was|were|do|does|did|can|could|should|would|will|has|have|what|which|who|why|how|when|where)$/i;
+
+const SEARCH_STOPWORDS = new Set([
+  'a', 'an', 'the', 'of', 'for', 'to', 'in', 'on', 'at', 'by', 'with', 'and', 'or',
+  'is', 'are', 'was', 'were', 'be', 'been', 'am',
+  'good', 'best', 'better', 'great', 'worth', 'really', 'actually', 'still', 'any',
+  'my', 'me', 'i', 'you', 'your', 'it', 'its', 'that', 'this', 'these', 'those',
+  'device', 'thing', 'option', 'choice', 'buy', 'buying', 'purchase', 'get', 'getting',
+]);
+
+export function toSearchQuery(topic: string, focus?: string): string {
+  const raw = `${topic} ${focus ?? ''}`.trim();
+
+  let words = raw
+    .toLowerCase()
+    .replace(/[?!.,;:"'()]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+
+  // Drop a leading question word, then the filler.
+  if (words.length && QUESTION_WORDS.test(words[0])) words = words.slice(1);
+  const kept = words.filter((w) => !SEARCH_STOPWORDS.has(w));
+
+  // If stripping ate everything meaningful, the original is the safer bet.
+  const query = (kept.length >= 2 ? kept : words).slice(0, 8).join(' ');
+  return query || raw;
+}

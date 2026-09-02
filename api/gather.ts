@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
-import { countUsable, rankSources, shapeRow, type ShapedSource } from './_shape.js';
+import { countUsable, rankSources, shapeRow, toSearchQuery, type ShapedSource } from './_shape.js';
 
 /**
  * Gathers discussion-source results for a topic.
@@ -91,7 +91,12 @@ async function serpapi(params: Record<string, string>, key: string): Promise<any
   const res = await fetch(`https://serpapi.com/search.json?${qs}`);
   if (!res.ok) throw new Error(`SerpApi ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const data = (await res.json()) as any;
-  if (data?.error) throw new Error(`SerpApi: ${data.error}`);
+  if (data?.error) {
+    // "hasn't returned any results" is an empty result set, not a failure. Throwing
+    // here killed the gather before the Google fallback — which exists for exactly this.
+    if (/returned any results|fully empty/i.test(String(data.error))) return { organic_results: [] };
+    throw new Error(`SerpApi: ${data.error}`);
+  }
   return data;
 }
 
@@ -143,16 +148,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const cached = readCache(query);
   if (cached) return res.status(200).json({ sources: cached, cached: true, credits: 0 });
 
+  // google_forums matches near-literally, so the user's question is condensed to
+  // keywords before searching. The question itself still drives extraction.
+  const search = toSearchQuery(topic, focus);
+
   try {
     // Forums alone is usually enough, and it is the cheaper path.
-    const forums = await fromForums(query, key);
+    const forums = await fromForums(search, key);
     let sources = dedupe([forums]);
     let credits = 1;
 
     if (countUsable(sources) < MIN_USABLE_RESULTS) {
       try {
-        const search = await fromSearch(query, key);
-        sources = dedupe([forums, search]);
+        const wider = await fromSearch(search, key);
+        sources = dedupe([forums, wider]);
         credits = 2;
       } catch (err) {
         // Forums results still stand on their own; do not fail the gather over the fallback.
@@ -161,11 +170,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     if (sources.length === 0) {
-      return res.status(200).json({ sources: [], credits, message: 'No discussion threads found for that topic.' });
+      return res
+        .status(200)
+        .json({ sources: [], credits, searched: search, message: `No discussion threads found for "${search}".` });
     }
 
     writeCache(query, sources);
-    return res.status(200).json({ sources, cached: false, credits });
+    return res.status(200).json({ sources, cached: false, credits, searched: search });
   } catch (err) {
     return res.status(502).json({ error: 'gather_failed', message: err instanceof Error ? err.message : String(err) });
   }
