@@ -20,7 +20,10 @@ import { countUsable, rankSources, shapeRow, toSearchQuery, type ShapedSource } 
 type RawSource = ShapedSource;
 
 const DISCUSSION_SITES = ['reddit.com', 'news.ycombinator.com', 'stackexchange.com', 'lobste.rs'];
-const THREAD_CAP = 10; // latency is the enemy of a 3-minute demo
+// SerpApi returns each thread's opening post, and most opening posts are questions.
+// Only about one snippet in five carries an actual opinion, so the board needs a
+// wider net to find enough of them. Extraction stays ~2s at this size.
+const THREAD_CAP = 18;
 const MIN_USABLE_RESULTS = 4; // usable discussion-grade rows, not raw count — raw count is always ~10
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
