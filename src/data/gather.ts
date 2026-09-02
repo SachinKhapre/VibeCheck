@@ -61,12 +61,22 @@ export async function runGather(topic: string, focus?: string): Promise<GatherRe
 
   try {
     const data = await postJson('/api/extract', { topic, focus, sources });
-    const byId = new Map(sources.map((s) => [s.id, s]));
-    for (const s of (data.sources ?? []) as Array<{ id: string; stance?: Source['stance'] }>) {
-      const existing = byId.get(s.id);
-      if (existing && s.stance) existing.stance = s.stance;
-    }
-    return { claims: (data.claims ?? []) as Claim[], sources, demo: false };
+    const stances = new Map<string, Source['stance']>(
+      ((data.sources ?? []) as Array<{ id: string; stance?: Source['stance'] }>).map((s) => [s.id, s.stance ?? 'secondhand']),
+    );
+    // Extraction also decides relevance — google_forums drifts, and an off-topic
+    // thread on the board is worse than a short board.
+    const kept = sources
+      .filter((s) => stances.has(s.id))
+      .map((s) => ({ ...s, stance: stances.get(s.id)! }));
+
+    const dropped = (data.dropped ?? []) as Array<{ id: string; reason: string }>;
+    return {
+      claims: (data.claims ?? []) as Claim[],
+      sources: kept.length > 0 ? kept : sources,
+      demo: false,
+      note: dropped.length > 0 ? `Dropped ${dropped.length} off-topic ${dropped.length === 1 ? 'thread' : 'threads'}.` : undefined,
+    };
   } catch (err) {
     return {
       claims: [],

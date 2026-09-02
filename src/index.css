@@ -23,6 +23,25 @@
   --pin: #e9c46a;
 
   color-scheme: dark;
+  --accent: #8b7cff;
+  --glow: rgba(111, 206, 159, 0.12);
+}
+
+:root[data-theme='light'] {
+  --ground: #f5f6f8;
+  --raised: #ffffff;
+  --rule: #dfe3e8;
+  --rule-soft: #e9ecf0;
+  --ink: #18202b;
+  --ink-2: #5d6875;
+  --ink-3: #8a95a3;
+  --agree: #16845b;
+  --against: #c9573c;
+  --trust: #b27a13;
+  --pin: #b27a13;
+  --accent: #6558e8;
+  --glow: rgba(22, 132, 91, 0.09);
+  color-scheme: light;
 }
 
 * {
@@ -35,12 +54,13 @@ body {
   color: var(--ink);
   font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background 220ms ease, color 220ms ease;
 }
 
 .app {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 28px 28px 120px;
+  padding: 30px 32px 120px;
 }
 
 /* ---------- masthead ---------- */
@@ -49,7 +69,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 18px;
+  padding: 0 0 22px;
   border-bottom: 1px solid var(--rule);
 }
 
@@ -57,8 +77,8 @@ body {
   display: flex;
   align-items: baseline;
   gap: 4px;
-  font-size: 20px;
-  font-weight: 650;
+  font-size: 22px;
+  font-weight: 750;
   letter-spacing: -0.02em;
 }
 .wordmark .dot {
@@ -73,6 +93,8 @@ body {
   gap: 8px;
   font-size: 12px;
   color: var(--ink-2);
+  align-items: center;
+  flex-wrap: wrap;
 }
 .chip {
   border: 1px solid var(--rule);
@@ -84,42 +106,59 @@ body {
   color: var(--agree);
   border-color: color-mix(in srgb, var(--agree) 35%, var(--rule));
 }
+.theme-toggle {
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--raised);
+  color: var(--ink-2);
+  padding: 5px 10px;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+.theme-toggle:hover { color: var(--ink); border-color: var(--accent); transform: translateY(-1px); }
 
 /* ---------- decision input ---------- */
 
 .decide {
   display: flex;
   gap: 10px;
-  margin: 28px 0 0;
+  margin: 34px 0 0;
+  max-width: 820px;
 }
 .decide input {
   flex: 1;
   background: var(--raised);
   border: 1px solid var(--rule);
-  border-radius: 6px;
+  border-radius: 12px;
   color: var(--ink);
-  padding: 14px 16px;
+  padding: 16px 18px;
   font: inherit;
-  font-size: 17px;
+  font-size: 18px;
+  box-shadow: 0 10px 30px var(--glow);
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
 }
 .decide input::placeholder {
   color: var(--ink-3);
 }
 .decide input:focus {
   outline: none;
-  border-color: var(--ink-3);
-  background: #191c22;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent), 0 12px 32px var(--glow);
 }
 .decide button {
   background: var(--ink);
   color: var(--ground);
   border: 0;
-  border-radius: 6px;
-  padding: 0 26px;
+  border-radius: 12px;
+  padding: 0 28px;
   font: inherit;
   font-weight: 650;
   cursor: pointer;
+  transition: transform 160ms ease, filter 160ms ease;
 }
+.decide button:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.06); }
 .decide button:disabled {
   opacity: 0.45;
   cursor: default;
@@ -129,10 +168,10 @@ body {
 
 .empty {
   max-width: 54ch;
-  margin: 72px 0;
+  margin: 88px 0;
 }
 .empty .lede {
-  font-size: 22px;
+  font-size: clamp(24px, 3vw, 34px);
   line-height: 1.4;
   letter-spacing: -0.01em;
   margin: 0 0 14px;
@@ -148,7 +187,7 @@ body {
 .ghost {
   background: none;
   border: 1px solid var(--rule);
-  border-radius: 6px;
+  border-radius: 10px;
   color: var(--ink-2);
   padding: 9px 14px;
   font: inherit;
@@ -191,7 +230,7 @@ body {
 .board {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 306px;
-  gap: 44px;
+  gap: 64px;
   margin-top: 12px;
   align-items: start;
 }
@@ -211,7 +250,7 @@ body {
 
 .claim {
   border-top: 1px solid var(--rule-soft);
-  padding: 22px 0 20px;
+  padding: 28px 0 26px;
 }
 .claim:first-child {
   border-top: 0;
@@ -267,7 +306,7 @@ body {
 
 .claim-text {
   margin: 0 0 16px;
-  font-size: 19px;
+  font-size: 21px;
   line-height: 1.35;
   letter-spacing: -0.011em;
   max-width: 42ch;
@@ -278,7 +317,7 @@ body {
 
 /* The signature element. The bar's length is the claim's weight; each segment is one voice. */
 .support-track {
-  height: 18px;
+  height: 20px;
   margin-bottom: 10px;
   border-bottom: 1px solid var(--rule-soft);
 }
@@ -287,6 +326,7 @@ body {
   gap: 4px;
   height: 100%;
   transition: width 380ms cubic-bezier(0.2, 0, 0, 1);
+  filter: drop-shadow(0 3px 8px var(--glow));
 }
 .seg {
   min-width: 6px;
@@ -520,6 +560,17 @@ body {
 .sources li.trusted {
   box-shadow: inset 2px 0 0 var(--trust);
   padding-left: 10px;
+}
+
+@media (max-width: 620px) {
+  .app { padding: 20px 18px 80px; }
+  .masthead { align-items: flex-start; gap: 14px; }
+  .agent-status { justify-content: flex-end; }
+  .chip { display: none; }
+  .decide { gap: 8px; }
+  .decide button { padding: 0 18px; }
+  .evidence li { grid-template-columns: 1fr; gap: 4px; }
+  .board { gap: 24px; }
 }
 .sources li.rejected .source-title {
   text-decoration: line-through;

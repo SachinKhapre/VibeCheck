@@ -11,6 +11,12 @@ export default function App() {
   const [state, dispatch] = useReducer(reducer, emptyBoard);
   const [draft, setDraft] = useState('');
   const [registered, setRegistered] = useState<string[]>([]);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => localStorage.getItem('sift-theme') === 'light' ? 'light' : 'dark');
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('sift-theme', theme);
+  }, [theme]);
 
   // The agent gets the same state object the UI renders.
   useTools(siftTools(state, dispatch), setRegistered);
@@ -58,6 +64,9 @@ export default function App() {
           <span className={registered.length > 0 ? 'chip live' : 'chip'} title={registered.join(', ')}>
             {registered.length > 0 ? `agent connected · ${registered.length} tools` : 'connecting agent…'}
           </span>
+          <button className="theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Toggle color theme">
+            <span aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span> {theme === 'dark' ? 'light' : 'dark'}
+          </button>
         </div>
       </header>
 
