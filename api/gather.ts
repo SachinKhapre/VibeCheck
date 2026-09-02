@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
-import { countUsable, rankSources, shapeRow, type ShapedSource } from './_shape';
+import { countUsable, rankSources, shapeRow, type ShapedSource } from './_shape.js';
 
 /**
  * Gathers discussion-source results for a topic.

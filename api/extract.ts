@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { z } from 'zod';
-import type { ShapedSource } from './_shape';
+import type { ShapedSource } from './_shape.js';
 
 /**
  * Turns gathered thread snippets into clustered claims.
