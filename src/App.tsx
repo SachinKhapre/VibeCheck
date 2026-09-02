@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { emptyBoard, maxSupportBasis, reducer, visibleClaims } from './state/board';
-import { fixtureTopic, isDemoMode, runGather } from './data/gather';
+import { fixtureResult, fixtureTopic, isDemoMode, runGather } from './data/gather';
 import { siftTools } from './mcp/siftTools';
 import { useTools } from './mcp/useTools';
 import { ClaimCard } from './components/ClaimCard';
@@ -26,8 +26,7 @@ export default function App() {
   useEffect(() => {
     if (autoloaded.current || !isDemoMode()) return;
     autoloaded.current = true;
-    setDraft(fixtureTopic);
-    void gather(fixtureTopic);
+    void gather(fixtureTopic, true);
   }, []);
 
   const basis = useMemo(() => maxSupportBasis(state.claims, state.sources), [state.claims, state.sources]);
@@ -36,16 +35,18 @@ export default function App() {
   const sourceCount = Object.keys(state.sources).length;
   const rejected = Object.values(state.sources).filter((s) => s.verdict === 'rejected').length;
 
-  async function gather(topic: string) {
+  async function gather(topic: string, recorded = false) {
     if (!topic.trim()) return;
+    setDraft(topic);
     dispatch({ type: 'gather:start', topic, actor: 'you' });
     try {
-      const result = await runGather(topic);
+      const result = recorded ? fixtureResult('Recorded gather — not a live search.') : await runGather(topic);
       dispatch({
         type: 'gather:success',
         claims: result.claims,
         sources: result.sources,
         demo: result.demo,
+        note: result.note,
         actor: 'you',
       });
     } catch (err) {
@@ -98,13 +99,21 @@ export default function App() {
             Sift does the reading. You decide who to believe — reject the shills, trust the owners, and watch every
             claim they touched re-weight.
           </p>
-          <button className="ghost" onClick={() => void gather(fixtureTopic)}>
+          <button className="ghost" onClick={() => void gather(fixtureTopic, true)}>
             Try “{fixtureTopic}”
           </button>
         </section>
       )}
 
-      {state.status === 'error' && <p className="error">{state.error}</p>}
+      {state.status === 'error' && (
+        <section className="failed">
+          <p className="error">Could not gather opinions on “{state.topic}”.</p>
+          <p className="reason">{state.error}</p>
+          <button className="ghost" onClick={() => void gather(fixtureTopic, true)}>
+            Show the recorded board for “{fixtureTopic}” instead
+          </button>
+        </section>
+      )}
 
       {state.status !== 'empty' && (
         <>
@@ -120,6 +129,8 @@ export default function App() {
                 <strong>{rejected}</strong> rejected by you
               </span>
             )}
+            {state.note && <span className="note">{state.note}</span>}
+            {state.demo && <span className="note recorded">recorded gather</span>}
             {state.constraints.map((c, i) => (
               <span key={i} className="constraint">
                 {c}

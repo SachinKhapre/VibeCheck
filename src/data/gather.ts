@@ -42,13 +42,10 @@ async function postJson(url: string, body: unknown): Promise<any> {
 export async function runGather(topic: string, focus?: string): Promise<GatherResult> {
   if (isDemoMode()) return fixtureResult('Demo mode — serving the cached fixture.');
 
-  let raw: Array<Omit<Source, 'stance' | 'verdict' | 'snippet'> & { snippet: string }>;
-  try {
-    const data = await postJson('/api/gather', { topic, focus });
-    raw = data.sources ?? [];
-  } catch (err) {
-    return fixtureResult(`Live gather unavailable (${err instanceof Error ? err.message : String(err)}). Showing the cached fixture.`);
-  }
+  // Never substitute the recorded board for a failed live gather. Showing one
+  // topic's evidence under another topic's question is worse than any error screen.
+  const data = await postJson('/api/gather', { topic, focus });
+  const raw: Array<Omit<Source, 'stance' | 'verdict' | 'snippet'> & { snippet: string }> = data.sources ?? [];
 
   if (raw.length === 0) return { claims: [], sources: [], demo: false, note: 'No discussion threads found for that topic.' };
 

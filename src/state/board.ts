@@ -21,7 +21,7 @@ interface Origin {
 export type Action = Origin &
   (
     | { type: 'gather:start'; topic: string; focus?: string }
-    | { type: 'gather:success'; claims: Claim[]; sources: Source[]; demo: boolean }
+    | { type: 'gather:success'; claims: Claim[]; sources: Source[]; demo: boolean; note?: string }
     | { type: 'gather:error'; error: string }
     | { type: 'source:mark'; sourceId: string; verdict: Verdict; reason?: string }
     | { type: 'claim:pin'; claimId: string; pinned: boolean }
@@ -74,13 +74,14 @@ export function reducer(state: BoardState, action: Action): BoardState {
         status: 'ready',
         error: undefined,
         demo: action.demo,
+        note: action.note,
         claims,
         sources,
         activity: log(
           state,
           action,
           `Found ${action.sources.length} threads, clustered into ${action.claims.length - attachedClaimIds(action.claims).size} claims`,
-          lowSignal > 0 ? `${lowSignal} flagged low signal` : undefined,
+          [action.note, lowSignal > 0 ? `${lowSignal} flagged low signal` : null].filter(Boolean).join(' · ') || undefined,
         ),
         lastUpdated: now,
       };

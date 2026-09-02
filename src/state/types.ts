@@ -74,6 +74,8 @@ export interface BoardState {
   constraints: string[];
   /** Newest first. Rendered live so the human-agent loop is visible on screen. */
   activity: ActivityEntry[];
+  /** What happened during the last gather that the reader should know about. */
+  note?: string;
   lastUpdated: number;
 }
 

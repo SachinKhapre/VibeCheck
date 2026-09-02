@@ -603,3 +603,11 @@ body {
 .verdict-actions .link {
   padding: 0 12px 0 0;
 }
+
+.failed { margin: 40px 0; max-width: 60ch; }
+.failed .reason {
+  color: var(--ink-3); font-size: 13px; margin: 6px 0 18px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.ledger .note { color: var(--trust); }
+.ledger .note.recorded { border: 1px solid var(--rule); border-radius: 100px; padding: 2px 10px; }
