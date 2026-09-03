@@ -2,12 +2,21 @@ import { useEffect, useMemo, useReducer, useRef, useState, type MouseEvent } fro
 import { emptyBoard, maxSupportBasis, reducer, visibleClaims } from './state/board';
 import { boardResult, fixtureResult, fixtureTopic, initialBoard, isDemoMode, runGather } from './data/gather';
 import { recordedBoards, type RecordedBoard } from './fixtures';
+import {
+  clearRecents,
+  forgetGather,
+  loadRecents,
+  recentResult,
+  rememberGather,
+  type RecentGather,
+} from './data/recents';
 import { vibeTools } from './mcp/vibeTools';
 import { useTools } from './mcp/useTools';
 import { ClaimCard } from './components/ClaimCard';
 import { SourceList } from './components/SourceList';
 import { ActivityRail } from './components/ActivityRail';
 import { BoardGallery } from './components/BoardGallery';
+import { RecentSearches } from './components/RecentSearches';
 import { ToolsPopover } from './components/ToolsPopover';
 
 /** Live starting points. The recorded boards below the fold are the ones that always work. */
@@ -27,6 +36,7 @@ export default function App() {
   const [state, dispatch] = useReducer(reducer, emptyBoard);
   const [draft, setDraft] = useState('');
   const [registered, setRegistered] = useState<string[]>([]);
+  const [recents, setRecents] = useState<RecentGather[]>(() => loadRecents());
   const [theme, setTheme] = useState<'light' | 'dark'>(() => localStorage.getItem('vibecheck-theme') === 'light' ? 'light' : 'dark');
 
   useEffect(() => {
@@ -65,6 +75,8 @@ export default function App() {
     dispatch({ type: 'gather:start', topic, actor: 'you' });
     try {
       const result = recorded ? fixtureResult('Recorded gather — not a live search.') : await runGather(topic);
+      // A working live gather is what keeps the home page from going stale.
+      if (!recorded) setRecents(rememberGather(topic, result));
       dispatch({
         type: 'gather:success',
         claims: result.claims,
@@ -93,6 +105,21 @@ export default function App() {
     });
     // Shareable without adding a router.
     if (updateUrl) history.replaceState(null, '', `?board=${board.slug}`);
+  }
+
+  /** A saved board, reopened from this browser. No search, no extraction, no credit. */
+  function openRecent(recent: RecentGather) {
+    setDraft(recent.topic);
+    dispatch({ type: 'gather:start', topic: recent.topic, actor: 'you' });
+    const result = recentResult(recent);
+    dispatch({
+      type: 'gather:success',
+      claims: result.claims,
+      sources: result.sources,
+      demo: false,
+      note: result.note,
+      actor: 'you',
+    });
   }
 
   /** Back to the empty state, and back to a clean URL — `?board=` and `?demo=1` go with it. */
@@ -170,6 +197,14 @@ export default function App() {
               </button>
             ))}
           </div>
+
+          <RecentSearches
+            recents={recents}
+            onOpen={openRecent}
+            onRerun={(topic) => void gather(topic)}
+            onForget={(topic) => setRecents(forgetGather(topic))}
+            onClear={() => setRecents(clearRecents())}
+          />
 
           <BoardGallery boards={recordedBoards} onOpen={openBoard} />
 

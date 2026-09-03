@@ -34,6 +34,14 @@ node --env-file=.env scripts/build-board.ts <slug> "<topic>" raw/<file>.json "<o
 
 That writes `src/fixtures/<slug>.json`; list it in `src/fixtures/index.ts` and it appears in the gallery. It costs no SerpApi credit — the search already happened.
 
+## Recent gathers
+
+Once a live gather works, the home page stops being a fixed set of recorded boards: the last eight live gathers are listed above the gallery, newest first.
+
+The whole board is saved, not just the query, so reopening one costs nothing — no search, no extraction, no credit. Re-running it live is a separate button, because that is the one that spends. Storage is `localStorage` under `vibecheck-recents-v1`, capped at 8 entries, and sheds the oldest entries rather than failing a gather if the quota is hit.
+
+This is per-browser. A genuine cross-user "popular searches" list means counting normalized queries in a shared store (Vercel KV / Upstash), which would also give `/api/gather` a cache that survives on Vercel — the disk cache is dev-only, see `DISK_CACHE` in [api/gather.ts](api/gather.ts). Done that way, the popular list is the cache's hot set, so every entry on it is a guaranteed cache hit and costs nothing to open.
+
 ## WebMCP
 
 The page registers six tools on `document.modelContext` (falling back to `navigator.modelContext`, then to `@mcp-b/webmcp-polyfill`). The agent-status chip in the masthead opens a panel listing them, live.
