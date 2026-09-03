@@ -7,6 +7,8 @@ interface Props {
   counter?: Claim;
   sources: Record<string, Source>;
   basis: number;
+  /** Position on the board, used only to stagger the entrance. */
+  index?: number;
   onPin: (pinned: boolean) => void;
   onMark: (sourceId: string, verdict: Verdict) => void;
 }
@@ -16,7 +18,7 @@ interface Props {
  * Rejecting a source collapses its segment, and the bar re-weights in place.
  * It is the only thing on the page allowed to be loud.
  */
-export function ClaimCard({ claim, counter, sources, basis, onPin, onMark }: Props) {
+export function ClaimCard({ claim, counter, sources, basis, index = 0, onPin, onMark }: Props) {
   const [open, setOpen] = useState(false);
   const support = supportFor(claim, sources, basis);
   const counterSupport = counter ? supportFor(counter, sources, basis) : null;
@@ -24,7 +26,10 @@ export function ClaimCard({ claim, counter, sources, basis, onPin, onMark }: Pro
   const standing = standingOf(claim, sources, Boolean(counter));
 
   return (
-    <article className={`claim ${standing} ${claim.pinned ? 'pinned' : ''}`}>
+    <article
+      className={`claim ${standing} ${claim.pinned ? 'pinned' : ''}`}
+      style={{ ['--stagger' as string]: `${Math.min(index, 8) * 60}ms` }}
+    >
       <header className="claim-head">
         <span className={`standing ${standing}`}>{standing}</span>
         <button
@@ -67,6 +72,10 @@ export function ClaimCard({ claim, counter, sources, basis, onPin, onMark }: Pro
         <button className="link" onClick={() => setOpen((v) => !v)}>
           {open ? 'hide' : 'evidence'}
         </button>
+        <span className="spacer" />
+        <span className="strength" title="Support relative to the best-backed claim on the board">
+          {Math.round(support.weight * 100)}%
+        </span>
       </p>
 
       {open && (
