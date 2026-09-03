@@ -27,6 +27,7 @@ export type Action = Origin &
     | { type: 'claim:pin'; claimId: string; pinned: boolean }
     | { type: 'board:constrain'; constraint: string }
     | { type: 'board:clearConstraints' }
+    | { type: 'board:reset' }
   );
 
 const ACTIVITY_CAP = 40;
@@ -86,6 +87,11 @@ export function reducer(state: BoardState, action: Action): BoardState {
         lastUpdated: now,
       };
     }
+
+    // Going home. Verdicts, pins and the activity log are all about one board, and a
+    // cleared board should look exactly like a first load — not like one with a history.
+    case 'board:reset':
+      return { ...emptyBoard, lastUpdated: now };
 
     case 'gather:error':
       return {

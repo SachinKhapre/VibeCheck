@@ -175,6 +175,15 @@ body::before {
   font-size: 23px;
   font-weight: 700;
   letter-spacing: -0.035em;
+  color: var(--ink);
+  text-decoration: none;
+  transition: opacity 180ms var(--ease);
+}
+.wordmark:hover {
+  opacity: 0.86;
+}
+.wordmark:hover .dot {
+  transform: scale(1.3);
 }
 .wordmark .dot {
   width: 8px;
@@ -182,6 +191,7 @@ body::before {
   border-radius: 50%;
   background: var(--brand-grad);
   animation: pulse-dot 3.4s var(--ease) infinite;
+  transition: transform 220ms var(--spring);
 }
 @keyframes pulse-dot {
   0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useState, type MouseEvent } from 'react';
 import { emptyBoard, maxSupportBasis, reducer, visibleClaims } from './state/board';
 import { boardResult, fixtureResult, fixtureTopic, initialBoard, isDemoMode, runGather } from './data/gather';
 import { recordedBoards, type RecordedBoard } from './fixtures';
@@ -95,13 +95,26 @@ export default function App() {
     if (updateUrl) history.replaceState(null, '', `?board=${board.slug}`);
   }
 
+  /** Back to the empty state, and back to a clean URL — `?board=` and `?demo=1` go with it. */
+  function goHome(e: MouseEvent<HTMLAnchorElement>) {
+    // Let the browser handle the ways a person asks for a new tab or window.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    setDraft('');
+    dispatch({ type: 'board:reset', actor: 'you' });
+    history.replaceState(null, '', location.pathname);
+    window.scrollTo({ top: 0 });
+  }
+
   return (
     <div className="app">
       <header className="masthead">
-        <div className="wordmark">
-          vibe<span className="mark">check</span>
+        {/* A real link, so middle-click and open-in-new-tab behave. A plain click
+            clears the board in place instead of paying for a reload. */}
+        <a className="wordmark" href="/" onClick={goHome} aria-label="VibeCheck — home">
+          Vibe<span className="mark">Check</span>
           <span className="dot" />
-        </div>
+        </a>
         <div className="agent-status">
           <ToolsPopover tools={tools} registered={registered} demo={isDemoMode()} />
           <button className="theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Toggle color theme">
