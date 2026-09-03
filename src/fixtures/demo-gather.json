@@ -1,5 +1,7 @@
 {
+  "slug": "dell-xps-14",
   "topic": "is the dell xps 14 good for dev work?",
+  "blurb": "The laptop question, argued out by people who actually bought one.",
   "recordedAt": "2026-09-01",
   "note": "Real SerpApi google_forums response, shaped by api/_shape.ts. Claims are paraphrased from the returned snippets.",
   "sources": [
@@ -125,85 +127,177 @@
       "id": "c1",
       "text": "It is priced against a MacBook Pro, and people notice",
       "polarity": "negative",
-      "tags": ["price", "cost", "macbook", "value", "expensive"],
+      "tags": [
+        "price",
+        "cost",
+        "macbook",
+        "value",
+        "expensive"
+      ],
       "pinned": false,
       "evidence": [
-        { "sourceId": "sca61413e", "line": "Roughly the same price as a similarly specced MacBook Pro, about $3,000 CAD" },
-        { "sourceId": "sedc9e8c3", "line": "High pricing named as the thing that may deter buyers" }
+        {
+          "sourceId": "sca61413e",
+          "line": "Roughly the same price as a similarly specced MacBook Pro, about $3,000 CAD"
+        },
+        {
+          "sourceId": "sedc9e8c3",
+          "line": "High pricing named as the thing that may deter buyers"
+        }
       ]
     },
     {
       "id": "c2",
       "text": "People want it as a work machine, not a performance machine",
       "polarity": "mixed",
-      "tags": ["work", "graphics", "gaming", "oled", "display"],
+      "tags": [
+        "work",
+        "graphics",
+        "gaming",
+        "oled",
+        "display"
+      ],
       "pinned": false,
       "evidence": [
-        { "sourceId": "sb13ce9c7", "line": "Purely a work laptop; integrated graphics acceptable, OLED extremely desirable" },
-        { "sourceId": "sa5a473ca", "line": "Grouped with cloud gaming in a generic roundup" }
+        {
+          "sourceId": "sb13ce9c7",
+          "line": "Purely a work laptop; integrated graphics acceptable, OLED extremely desirable"
+        },
+        {
+          "sourceId": "sa5a473ca",
+          "line": "Grouped with cloud gaming in a generic roundup"
+        }
       ]
     },
     {
       "id": "c3",
       "text": "Dell's Linux track record is the reason to buy and the reason not to",
       "polarity": "mixed",
-      "tags": ["linux", "fedora", "ubuntu", "drivers"],
+      "tags": [
+        "linux",
+        "fedora",
+        "ubuntu",
+        "drivers"
+      ],
       "pinned": false,
       "contestedBy": "c3b",
       "evidence": [
-        { "sourceId": "s33cec086", "line": "Credits Dell for working with the Linux community and shipping XPS DE with Ubuntu" }
+        {
+          "sourceId": "s33cec086",
+          "line": "Credits Dell for working with the Linux community and shipping XPS DE with Ubuntu"
+        }
       ]
     },
     {
       "id": "c3b",
       "text": "Counter: a past Dell laptop soured the same person on the brand",
       "polarity": "negative",
-      "tags": ["linux", "reliability", "brand"],
+      "tags": [
+        "linux",
+        "reliability",
+        "brand"
+      ],
       "pinned": false,
-      "evidence": [{ "sourceId": "s33cec086", "line": "Describes being soured by an earlier Dell machine" }]
+      "evidence": [
+        {
+          "sourceId": "s33cec086",
+          "line": "Describes being soured by an earlier Dell machine"
+        }
+      ]
     },
     {
       "id": "c4",
       "text": "Limited ports are the recurring practical complaint",
       "polarity": "negative",
-      "tags": ["ports", "connectivity", "dongles"],
+      "tags": [
+        "ports",
+        "connectivity",
+        "dongles"
+      ],
       "pinned": false,
-      "evidence": [{ "sourceId": "sedc9e8c3", "line": "Limited ports listed alongside high pricing as the drawbacks" }]
+      "evidence": [
+        {
+          "sourceId": "sedc9e8c3",
+          "line": "Limited ports listed alongside high pricing as the drawbacks"
+        }
+      ]
     },
     {
       "id": "c5",
       "text": "XPS is a safe premium pick",
       "polarity": "positive",
-      "tags": ["premium", "build quality", "recommendation", "safe"],
+      "tags": [
+        "premium",
+        "build quality",
+        "recommendation",
+        "safe"
+      ],
       "pinned": false,
       "evidence": [
-        { "sourceId": "sa5a473ca", "line": "Calls the XPS 13 renowned for premium build and performance" },
-        { "sourceId": "s6b6fcf70", "line": "Says the XPS is awesome — on a ₹45,000 budget" },
-        { "sourceId": "sedc9e8c3", "line": "Ideal for creatives and professionals" }
+        {
+          "sourceId": "sa5a473ca",
+          "line": "Calls the XPS 13 renowned for premium build and performance"
+        },
+        {
+          "sourceId": "s6b6fcf70",
+          "line": "Says the XPS is awesome — on a ₹45,000 budget"
+        },
+        {
+          "sourceId": "sedc9e8c3",
+          "line": "Ideal for creatives and professionals"
+        }
       ]
     },
     {
       "id": "c6",
       "text": "Most of what surfaces is people asking, not owners reporting",
       "polarity": "mixed",
-      "tags": ["evidence quality", "owners", "questions"],
+      "tags": [
+        "evidence quality",
+        "owners",
+        "questions"
+      ],
       "pinned": false,
       "evidence": [
-        { "sourceId": "s4ff48e84", "line": "A student asking whether to buy, not someone who owns one" },
-        { "sourceId": "sfbe4e81d", "line": "Someone starting a new job asking for recommendations" },
-        { "sourceId": "sf7ff145c", "line": "Snippet only restates the question, and about the XPS 15" }
+        {
+          "sourceId": "s4ff48e84",
+          "line": "A student asking whether to buy, not someone who owns one"
+        },
+        {
+          "sourceId": "sfbe4e81d",
+          "line": "Someone starting a new job asking for recommendations"
+        },
+        {
+          "sourceId": "sf7ff145c",
+          "line": "Snippet only restates the question, and about the XPS 15"
+        }
       ]
     },
     {
       "id": "c7",
       "text": "The XPS name covers machines that have little to do with each other",
       "polarity": "mixed",
-      "tags": ["drift", "models", "xps 13", "xps 15", "desktop"],
+      "tags": [
+        "drift",
+        "models",
+        "xps 13",
+        "xps 15",
+        "desktop"
+      ],
       "pinned": false,
       "evidence": [
-        { "sourceId": "sc50a0864", "line": "A secure boot failure on the XPS 8910, which is a desktop" },
-        { "sourceId": "s6b6fcf70", "line": "A budget thread recommending an Inspiron 14R" },
-        { "sourceId": "sf7ff145c", "line": "About the XPS 15, not the 14" }
+        {
+          "sourceId": "sc50a0864",
+          "line": "A secure boot failure on the XPS 8910, which is a desktop"
+        },
+        {
+          "sourceId": "s6b6fcf70",
+          "line": "A budget thread recommending an Inspiron 14R"
+        },
+        {
+          "sourceId": "sf7ff145c",
+          "line": "About the XPS 15, not the 14"
+        }
       ]
     }
   ]

@@ -48,7 +48,7 @@ export async function ensureModelContext(): Promise<ModelContextLike | null> {
     const { initializeWebMCPPolyfill } = await import('@mcp-b/webmcp-polyfill');
     initializeWebMCPPolyfill();
   } catch (err) {
-    console.warn('[sift] WebMCP polyfill unavailable', err);
+    console.warn('[vibecheck] WebMCP polyfill unavailable', err);
   }
   return getModelContext();
 }

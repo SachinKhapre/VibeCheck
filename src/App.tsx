@@ -1,13 +1,16 @@
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { emptyBoard, maxSupportBasis, reducer, visibleClaims } from './state/board';
-import { fixtureResult, fixtureTopic, isDemoMode, runGather } from './data/gather';
-import { siftTools } from './mcp/siftTools';
+import { boardResult, fixtureResult, fixtureTopic, initialBoard, isDemoMode, runGather } from './data/gather';
+import { recordedBoards, type RecordedBoard } from './fixtures';
+import { vibeTools } from './mcp/vibeTools';
 import { useTools } from './mcp/useTools';
 import { ClaimCard } from './components/ClaimCard';
 import { SourceList } from './components/SourceList';
 import { ActivityRail } from './components/ActivityRail';
+import { BoardGallery } from './components/BoardGallery';
+import { ToolsPopover } from './components/ToolsPopover';
 
-/** Starting points for a cold visitor. The first one is the recorded board, so it always works. */
+/** Live starting points. The recorded boards below the fold are the ones that always work. */
 const SUGGESTIONS = [
   'Is the Framework 13 worth it in 2026?',
   'Which mattress actually holds up after a year?',
@@ -24,22 +27,29 @@ export default function App() {
   const [state, dispatch] = useReducer(reducer, emptyBoard);
   const [draft, setDraft] = useState('');
   const [registered, setRegistered] = useState<string[]>([]);
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => localStorage.getItem('sift-theme') === 'light' ? 'light' : 'dark');
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => localStorage.getItem('vibecheck-theme') === 'light' ? 'light' : 'dark');
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    localStorage.setItem('sift-theme', theme);
+    localStorage.setItem('vibecheck-theme', theme);
   }, [theme]);
 
-  // The agent gets the same state object the UI renders.
-  useTools(siftTools(state, dispatch), setRegistered);
+  // The agent gets the same state object the UI renders — and the same list the chip shows.
+  const tools = vibeTools(state, dispatch);
+  useTools(tools, setRegistered);
 
-  // A judge opening ?demo=1 cold should land on a full board, not an empty one.
+  // A judge opening ?demo=1 or ?board=<slug> cold should land on a full board, not an empty one.
   const autoloaded = useRef(false);
   useEffect(() => {
-    if (autoloaded.current || !isDemoMode()) return;
-    autoloaded.current = true;
-    void gather(fixtureTopic, true);
+    if (autoloaded.current) return;
+    const deepLinked = initialBoard();
+    if (deepLinked) {
+      autoloaded.current = true;
+      openBoard(deepLinked, false);
+    } else if (isDemoMode()) {
+      autoloaded.current = true;
+      void gather(fixtureTopic, true);
+    }
   }, []);
 
   const basis = useMemo(() => maxSupportBasis(state.claims, state.sources), [state.claims, state.sources]);
@@ -68,17 +78,32 @@ export default function App() {
     }
   }
 
+  /** Recorded boards are bundled, so this needs no network and cannot fail. */
+  function openBoard(board: RecordedBoard, updateUrl = true) {
+    setDraft(board.topic);
+    dispatch({ type: 'gather:start', topic: board.topic, actor: 'you' });
+    const result = boardResult(board);
+    dispatch({
+      type: 'gather:success',
+      claims: result.claims,
+      sources: result.sources,
+      demo: true,
+      note: result.note,
+      actor: 'you',
+    });
+    // Shareable without adding a router.
+    if (updateUrl) history.replaceState(null, '', `?board=${board.slug}`);
+  }
+
   return (
     <div className="app">
       <header className="masthead">
         <div className="wordmark">
-          sift<span className="dot" />
+          vibe<span className="mark">check</span>
+          <span className="dot" />
         </div>
         <div className="agent-status">
-          {isDemoMode() && <span className="chip">recorded gather</span>}
-          <span className={registered.length > 0 ? 'chip live' : 'chip'} title={registered.join(', ')}>
-            {registered.length > 0 ? `agent connected · ${registered.length} tools` : 'connecting agent…'}
-          </span>
+          <ToolsPopover tools={tools} registered={registered} demo={isDemoMode()} />
           <button className="theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Toggle color theme">
             <span aria-hidden="true">{theme === 'dark' ? '☼' : '☾'}</span> {theme === 'dark' ? 'light' : 'dark'}
           </button>
@@ -106,7 +131,7 @@ export default function App() {
         </div>
         <button type="submit" disabled={gathering}>
           {gathering && <span className="spin" aria-hidden="true" />}
-          {gathering ? 'gathering' : 'sift'}
+          {gathering ? 'gathering' : 'check'}
         </button>
       </form>
 
@@ -120,21 +145,20 @@ export default function App() {
           </h1>
           <p className="sub">
             You already do this by hand — you add <strong>reddit</strong> to the search and read threads until a picture
-            forms. Sift does the reading. You decide who to believe, and every claim they touched re-weights in front of
-            you.
+            forms. VibeCheck does the reading. You decide who to believe, and every claim they touched re-weights in
+            front of you.
           </p>
 
           <div className="suggests">
             <span className="label">try</span>
-            <button className="suggest primary" onClick={() => void gather(fixtureTopic, true)}>
-              {fixtureTopic}
-            </button>
             {SUGGESTIONS.map((topic) => (
               <button key={topic} className="suggest" onClick={() => void gather(topic)}>
                 {topic}
               </button>
             ))}
           </div>
+
+          <BoardGallery boards={recordedBoards} onOpen={openBoard} />
 
           <div className="how">
             {HOW.map((step) => (

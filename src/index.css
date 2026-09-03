@@ -1,5 +1,5 @@
 /*
- * Sift.
+ * VibeCheck.
  *
  * The subject is discourse — people disagreeing in public. The visual job is to make
  * disagreement legible: what is near-universal, what is contested, what rests on one
@@ -1201,4 +1201,246 @@ body::before {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ---------- wordmark ---------- */
+
+.wordmark .mark {
+  background: var(--brand-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- agent tools popover ---------- */
+
+.tools-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+button.chip {
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+button.chip:hover {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--rule));
+}
+button.chip.live:hover {
+  color: var(--agree);
+}
+.chip .caret {
+  font-size: 8px;
+  opacity: 0.7;
+  transition: transform 200ms var(--ease);
+}
+.chip.open .caret {
+  transform: rotate(180deg);
+}
+
+.tools-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 60;
+  width: min(360px, calc(100vw - 36px));
+  padding: 16px 18px 8px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  background: var(--raised);
+  box-shadow: var(--shadow-lg);
+  animation: pop-in 200ms var(--ease) both;
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.985); }
+}
+.tools-panel header h3 {
+  margin: 0 0 6px;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+}
+.tools-panel header p {
+  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.tools-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tools-panel li {
+  padding: 11px 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.tools-panel li code {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--accent);
+}
+.tools-panel li.off code {
+  color: var(--ink-3);
+}
+.tools-panel li p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.tools-panel .pending {
+  margin-left: 8px;
+  padding: 1px 7px;
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  font-size: 10px;
+  color: var(--ink-3);
+}
+
+/* ---------- recorded board gallery ---------- */
+
+.gallery {
+  margin: 0 0 60px;
+}
+.gallery-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-bottom: 16px;
+}
+.gallery-head h2 {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+}
+.gallery-head p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.board-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 210px;
+  padding: 20px;
+  text-align: left;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  background: linear-gradient(160deg, var(--raised) 0%, var(--raised-2) 100%);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  animation: card-in 500ms var(--ease) both;
+  animation-delay: var(--stagger, 0ms);
+  transition: transform 260ms var(--ease), border-color 260ms var(--ease), box-shadow 260ms var(--ease);
+}
+.board-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, color-mix(in srgb, var(--accent) 55%, transparent), transparent);
+  opacity: 0;
+  transition: opacity 260ms var(--ease);
+}
+.board-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--rule));
+  box-shadow: var(--shadow-md);
+}
+.board-card:hover::after {
+  opacity: 1;
+}
+
+.board-topic {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.32;
+  letter-spacing: -0.015em;
+}
+.board-blurb {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+.board-top {
+  margin-top: auto;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--ink-3) 8%, transparent);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.board-top .quote {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 0;
+  color: var(--accent);
+  margin-right: 3px;
+  vertical-align: -2px;
+}
+.board-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+.board-stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.board-stats b {
+  color: var(--ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.board-stats i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  opacity: 0.6;
+  margin: 0 3px;
+}
+.board-date,
+.board-sites {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-3);
+}
+.board-sites {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+@media (max-width: 860px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+  .board-card { min-height: 0; }
 }

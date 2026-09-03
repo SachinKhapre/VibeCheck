@@ -1,0 +1,78 @@
+{
+  "slug": "bank-freelancers",
+  "topic": "which bank is best for freelancers in india",
+  "blurb": "Money, fees, and who actually got paid on time.",
+  "recordedAt": "2026-09-03",
+  "note": "Real SerpApi google_forums response, shaped by api/_shape.ts. Claims extracted by openai/gpt-oss-120b.",
+  "sources": [
+    {
+      "id": "s4cdd7d39",
+      "title": "I'm 19, student + freelancer — which savings account is ...",
+      "url": "https://www.reddit.com/r/CreditCardsIndia/comments/1nnhrg2/im_19_student_freelancer_which_savings_account_is/",
+      "site": "reddit.com",
+      "provenance": "Reddit · r/CreditCardsIndia",
+      "snippet": "Hi everyone, I’m 19 F, a student, and I also do freelancing, YouTube + a few other hobbies that give me income on the side. Right now, I have an SBI ...",
+      "tier": "discussion",
+      "engagement": 40,
+      "age": "11 months ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s2ac56503",
+      "title": "Seeking Advice on Business Account for Freelance Income",
+      "url": "https://technofino.in/community/threads/seeking-advice-on-business-account-for-freelance-income.20918/",
+      "site": "technofino.in",
+      "provenance": "TechnoFino",
+      "snippet": "Open a current account with Indian Overseas Bank or Bank of Baroda for best inward TT rates. Transfer excess cash to fixed deposit on ...",
+      "tier": "discussion",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s0fc33966",
+      "title": "Freelancers in India & Cross-Border Payments",
+      "url": "https://www.linkedin.com/posts/gaurish-vadhavkar-2657455b_freelancers-crossborderpayments-fintech-activity-7365954349308538883-WAS0",
+      "site": "linkedin.com",
+      "provenance": "LinkedIn · Gaurish Vadhavkar",
+      "snippet": "Freelancers in India & Cross-Border Payments India has over 15 million freelancers, making it one of the largest freelance talent pools ...",
+      "tier": "low-signal",
+      "engagement": 3,
+      "age": "1 year ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s62efb717",
+      "title": "What's the best savings account for freelancers?",
+      "url": "https://www.quora.com/Whats-the-best-savings-account-for-freelancers",
+      "site": "quora.com",
+      "provenance": "Quora",
+      "snippet": "What's the best savings account for freelancers?",
+      "tier": "low-signal",
+      "engagement": 30,
+      "age": "4 months ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Indian Overseas Bank and Bank of Baroda provide the best inward telegraphic transfer rates for freelancers in India.",
+      "polarity": "positive",
+      "tags": [
+        "rates",
+        "bank",
+        "freelancer"
+      ],
+      "pinned": false,
+      "evidence": [
+        {
+          "sourceId": "s2ac56503",
+          "line": "They suggest opening a current account with Indian Overseas Bank or Bank of Baroda to get the most favorable inward TT rates."
+        }
+      ]
+    }
+  ]
+}

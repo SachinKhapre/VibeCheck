@@ -6,7 +6,7 @@ import type { BoardState, Claim } from '../state/types';
 import { runGather } from '../data/gather';
 
 /** Every tool reads and writes the same board state the UI renders. */
-export function siftTools(state: BoardState, dispatch: Dispatch<Action>): ToolDefinition[] {
+export function vibeTools(state: BoardState, dispatch: Dispatch<Action>): ToolDefinition[] {
   const claimById = (id: string): Claim | undefined => state.claims.find((c) => c.id === id);
 
   const boardSnapshot = () => {

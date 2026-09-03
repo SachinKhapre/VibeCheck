@@ -20,7 +20,7 @@ export function useTools(defs: ToolDefinition[], onRegistered?: (names: string[]
     (async () => {
       const mc = await ensureModelContext();
       if (!mc) {
-        console.warn('[sift] No model context available. Serve over HTTPS — it is [SecureContext].');
+        console.warn('[vibecheck] No model context available. Serve over HTTPS — it is [SecureContext].');
         return;
       }
       if (controller.signal.aborted) return;
@@ -46,7 +46,7 @@ export function useTools(defs: ToolDefinition[], onRegistered?: (names: string[]
           registered.push(def.name);
         } catch (err) {
           if (controller.signal.aborted) return;
-          console.error(`[sift] failed to register ${def.name}`, err);
+          console.error(`[vibecheck] failed to register ${def.name}`, err);
         }
       }
       if (!controller.signal.aborted) onRegistered?.(registered);

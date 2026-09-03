@@ -211,7 +211,7 @@ export async function callOpenRouter(prompt: string, key: string): Promise<CallR
         headers: {
           authorization: `Bearer ${key}`,
           'content-type': 'application/json',
-          'x-title': 'Sift',
+          'x-title': 'VibeCheck',
         },
         body: JSON.stringify({
           model,

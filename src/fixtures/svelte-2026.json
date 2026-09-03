@@ -1,0 +1,208 @@
+{
+  "slug": "svelte-2026",
+  "topic": "is svelte worth learning in 2026?",
+  "blurb": "Framework opinions from people who shipped with it.",
+  "recordedAt": "2026-09-03",
+  "note": "Real SerpApi google_forums response, shaped by api/_shape.ts. Claims extracted by openai/gpt-oss-120b.",
+  "sources": [
+    {
+      "id": "s0885dd8a",
+      "title": "Svelte in 2026? : r/sveltejs",
+      "url": "https://www.reddit.com/r/sveltejs/comments/1w1ls6r/svelte_in_2026/",
+      "site": "reddit.com",
+      "provenance": "Reddit · r/sveltejs",
+      "snippet": "Svelte is the Best in 2026. The reason to use Svelte is productivity. easily one-man … it works very well with modern AI models. te honestly ...",
+      "tier": "discussion",
+      "engagement": 10,
+      "age": "3 days ago",
+      "stance": "owner",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s2163cab4",
+      "title": "Which frontend framework/language is simplest to learn in ...",
+      "url": "https://stackoverflow.com/questions/79893852/which-frontend-framework-language-is-simplest-to-learn-in-2025-2026-next-js-or",
+      "site": "stackoverflow.com",
+      "provenance": "Stack Overflow",
+      "snippet": "Svelte are just different and less popular than React, which makes learning them less valuable. Vue. Svelte is also simple and elegant, but has ...",
+      "tier": "discussion",
+      "engagement": 3,
+      "age": "6 months ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s7242ad5e",
+      "title": "Why you should learn React in 2026",
+      "url": "https://www.linkedin.com/posts/alexander-chiou_webdevelopment-whataboutjsp-growthtips-activity-7370244418991435776-C1Fs",
+      "site": "linkedin.com",
+      "provenance": "LinkedIn · Alex Chiou",
+      "snippet": "Note that neither Svelte, Vue or Solid make up a significant part of framework use; and htmx is really it's own thing because it abandons SPAs ...",
+      "tier": "low-signal",
+      "engagement": 700,
+      "age": "12 months ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s8d3d957e",
+      "title": "What is the newest (2023-2026) JavaScript technology ...",
+      "url": "https://www.quora.com/What-is-the-newest-2023-2026-JavaScript-technology-framework-and-library-that-s-worth-learning-today",
+      "site": "quora.com",
+      "provenance": "Quora",
+      "snippet": "What is the newest (2023-2026) JavaScript technology, framework, and library that’s worth learning today?",
+      "tier": "low-signal",
+      "engagement": 30,
+      "age": "1 week ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s7344ec87",
+      "title": "Is React still the best frontend framework in 2026?",
+      "url": "https://www.quora.com/Is-React-still-the-best-frontend-framework-in-2026",
+      "site": "quora.com",
+      "provenance": "Quora",
+      "snippet": "However, frameworks like Vue, Svelte ... yes full stack is still worth learning in 2026 but the reality is the entry level market is crowded.",
+      "tier": "low-signal",
+      "engagement": 30,
+      "age": "3 months ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s47a7802e",
+      "title": "Learning web development with SvelteKit",
+      "url": "https://www.linkedin.com/posts/erin-ballinger_webdevelopment-svelte-frontend-activity-7318692710087806978-K_fZ",
+      "site": "linkedin.com",
+      "provenance": "LinkedIn · Erin Ballinger",
+      "snippet": "Svelte truly is a wonderful start and is a great launching pad for developers looking to break into the large and admittedly intimidating world ...",
+      "tier": "low-signal",
+      "engagement": 7,
+      "age": "1 year ago",
+      "stance": "owner",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s4887f44a",
+      "title": "Is Svelte.js the right JavaScript library to learn in 2022?",
+      "url": "https://www.quora.com/Is-Svelte-js-the-right-JavaScript-library-to-learn-in-2022",
+      "site": "quora.com",
+      "provenance": "Quora",
+      "snippet": "Is Svelte.js the right JavaScript library to learn in 2022?",
+      "tier": "low-signal",
+      "engagement": 30,
+      "age": "3 years ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s730bd5a3",
+      "title": "What are the advantages of using Svelte?",
+      "url": "https://www.quora.com/What-are-the-advantages-of-using-Svelte",
+      "site": "quora.com",
+      "provenance": "Quora",
+      "snippet": "What are the advantages of using Svelte?",
+      "tier": "low-signal",
+      "engagement": 30,
+      "age": "4 years ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    },
+    {
+      "id": "s10768955",
+      "title": "What is your opinion of the Svelte framework?",
+      "url": "https://www.quora.com/What-is-your-opinion-of-the-Svelte-framework",
+      "site": "quora.com",
+      "provenance": "Quora",
+      "snippet": "What is your opinion of the Svelte framework?",
+      "tier": "low-signal",
+      "engagement": 30,
+      "age": "6 years ago",
+      "stance": "secondhand",
+      "verdict": "neutral"
+    }
+  ],
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Svelte increases developer productivity and integrates well with modern AI tools.",
+      "polarity": "positive",
+      "tags": [
+        "productivity",
+        "ai",
+        "learning"
+      ],
+      "pinned": false,
+      "evidence": [
+        {
+          "sourceId": "s0885dd8a",
+          "line": "The Reddit post claims Svelte boosts productivity and works smoothly with modern AI models."
+        },
+        {
+          "sourceId": "s47a7802e",
+          "line": "The LinkedIn author describes Svelte as an excellent starting point for new developers."
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "text": "Svelte has a relatively low market share, making job opportunities scarce compared to more popular frameworks.",
+      "polarity": "negative",
+      "tags": [
+        "popularity",
+        "jobs",
+        "market"
+      ],
+      "pinned": false,
+      "evidence": [
+        {
+          "sourceId": "s2163cab4",
+          "line": "The Stack Overflow answer notes Svelte is less popular than React, reducing its learning value."
+        },
+        {
+          "sourceId": "s7242ad5e",
+          "line": "The LinkedIn post observes Svelte comprises only a small portion of overall framework usage."
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "text": "Svelte is praised for its simplicity and elegant syntax, which eases the learning curve.",
+      "polarity": "positive",
+      "tags": [
+        "simplicity",
+        "elegance",
+        "learning"
+      ],
+      "pinned": false,
+      "evidence": [
+        {
+          "sourceId": "s2163cab4",
+          "line": "The answer highlights that Svelte is simple and elegant."
+        },
+        {
+          "sourceId": "s730bd5a3",
+          "line": "The Quora discussion lists advantages of Svelte, emphasizing its ease of use."
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "text": "The entry‑level market for Svelte developers is crowded, reducing its attractiveness for newcomers.",
+      "polarity": "negative",
+      "tags": [
+        "market",
+        "entry",
+        "competition"
+      ],
+      "pinned": false,
+      "evidence": [
+        {
+          "sourceId": "s7344ec87",
+          "line": "The Quora answer mentions that the entry‑level market is crowded, affecting its worthiness to learn."
+        }
+      ]
+    }
+  ]
+}

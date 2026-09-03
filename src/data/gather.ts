@@ -1,5 +1,5 @@
 import type { Claim, Source } from '../state/types';
-import fixture from '../fixtures/demo-gather.json';
+import { boardBySlug, defaultBoard, type RecordedBoard } from '../fixtures';
 
 export interface GatherResult {
   claims: Claim[];
@@ -8,20 +8,31 @@ export interface GatherResult {
   note?: string;
 }
 
-/** Cached fixture — the demo survives a rate limit, an exhausted quota, or a missing key. */
-export function fixtureResult(note?: string): GatherResult {
+/** A recorded board, opened as-is. Always labelled with the date it was really gathered. */
+export function boardResult(board: RecordedBoard, note?: string): GatherResult {
   return {
-    claims: fixture.claims as Claim[],
-    sources: fixture.sources as Source[],
+    claims: board.claims as Claim[],
+    sources: board.sources as Source[],
     demo: true,
-    note,
+    note: note ?? `Recorded gather from ${board.recordedAt} — not a live search.`,
   };
 }
 
-export const fixtureTopic = fixture.topic;
+/** The flagship board — the demo survives a rate limit, an exhausted quota, or a missing key. */
+export function fixtureResult(note?: string): GatherResult {
+  return boardResult(defaultBoard, note);
+}
+
+export const fixtureTopic = defaultBoard.topic;
 
 export function isDemoMode(): boolean {
   return new URLSearchParams(window.location.search).get('demo') === '1';
+}
+
+/** `?board=<slug>` deep-links a recorded board, so one can be shared as a link. */
+export function initialBoard(): RecordedBoard | undefined {
+  const slug = new URLSearchParams(window.location.search).get('board');
+  return slug ? boardBySlug(slug) : undefined;
 }
 
 async function postJson(url: string, body: unknown): Promise<any> {
