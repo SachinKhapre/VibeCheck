@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { ensureModelContext, fail, type ToolDefinition } from './modelContext';
 
 /**
@@ -14,7 +14,9 @@ export function useTools(defs: ToolDefinition[], onRegistered?: (names: string[]
   const latest = useRef(defs);
   latest.current = defs;
 
-  useEffect(() => {
+  // Register before the browser paints. ChatGPT's site-tool snapshot can run
+  // immediately after navigation and must see the tools on that first pass.
+  useLayoutEffect(() => {
     const controller = new AbortController();
 
     (async () => {
